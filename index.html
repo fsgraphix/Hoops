@@ -554,6 +554,30 @@ section.slide.no-ghost[data-num]::before { content:none }
 .badge.grad { background:var(--grad); color:#fff; font-weight:700; border:none; padding:10px 19px }
 
 /* ═══════════════════════════════════════════
+   REST SCREEN LABEL — "INTERVALO" / "DE JOGO" overlay on tela-descanso
+   Positioned from exact Photoshop coordinates on a 1920x1080 reference canvas,
+   converted to % of the section so it scales with the container.
+═══════════════════════════════════════════ */
+.rest-label {
+  position: absolute; inset: 0; z-index: 2;
+  pointer-events: none;
+}
+.rest-label span {
+  position: absolute;
+  top: 44.2%;
+  font-family: var(--font);
+  font-weight: 800;
+  font-variation-settings: 'wght' 800, 'wdth' 100;
+  font-size: clamp(28px, 7vw, 130px);
+  line-height: 1;
+  color: #fff;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rest-label .rl-1 { left: 13.6%; width: 27.87%; }
+.rest-label .rl-2 { left: 60.87%; width: 22.9%; }
+
+/* ═══════════════════════════════════════════
    CHANNEL NAV (Digital) — floating glass pill, Gamers-style
 ═══════════════════════════════════════════ */
 .channel-nav {
@@ -1471,7 +1495,11 @@ section.slide.has-photo .stat-num {
 
 <!-- TELA DE DESCANSO (sem numeração) -->
 <section id="tela-descanso-1" class="slide has-photo no-ghost" data-num="09">
-  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/tela-descanso.jpg')"></div>
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/v1787049534/tela-descanso.jpg')"></div>
+  <div class="rest-label">
+    <span class="rl-1" data-r>INTERVALO</span>
+    <span class="rl-2" data-r>DE JOGO</span>
+  </div>
 </section>
 
 
@@ -1757,7 +1785,7 @@ section.slide.has-photo .stat-num {
 
 <!-- 21 TERCEIRA ETAPA -->
 <section id="etapa3" class="slide has-photo" data-num="21">
-  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/etapa3.jpg')"></div>
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/v1787048296/etapa3.png')"></div>
   <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
   <div class="mob-dark"></div>
   <svg class="rb-shard pos-br size-sm rot-4 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1765,7 +1793,7 @@ section.slide.has-photo .stat-num {
     <div class="block">
       <span class="eyebrow" data-r>21 / Como Funciona</span>
       <h2 class="headline" data-r data-d="1">TERCEIRA ETAPA</h2>
-      <p class="subtitle" data-r data-d="2">Olheiros avaliam os jogadores presentes na quadra. Sem testes nesse primeiro momento.</p>
+      <p class="subtitle" data-r data-d="2">Olheiros avaliam os jogadores presentes na quadra.<br>Sem testes nesse primeiro momento.</p>
     </div>
   </div>
 </section>
@@ -1913,13 +1941,17 @@ section.slide.has-photo .stat-num {
 
 <!-- TELA DE DESCANSO (sem numeração) -->
 <section id="tela-descanso-2" class="slide has-photo no-ghost" data-num="30">
-  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/tela-descanso.jpg')"></div>
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/v1787049534/tela-descanso.jpg')"></div>
+  <div class="rest-label">
+    <span class="rl-1" data-r>INTERVALO</span>
+    <span class="rl-2" data-r>DE JOGO</span>
+  </div>
 </section>
 
 
 <!-- 29 DIVIDER · PROPRIEDADES -->
 <section id="divider-propriedades" class="slide has-photo" data-num="29">
-  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/divider-propriedades.jpg')"></div>
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/v1787048038/divider-propriedades.jpg')"></div>
   <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
   <div class="mob-dark"></div>
   <svg class="rb-shard pos-bl size-sm rot-3 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
