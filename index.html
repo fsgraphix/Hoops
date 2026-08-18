@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Hoops Basketball League — Proposta Comercial</title>
+<link rel="stylesheet" href="https://use.typekit.net/iyh2pzb.css">
+<style>
+
+/* ═══════════════════════════════════════════
+   TOKENS + RESET
+═══════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
+html { scroll-behavior:smooth }
+
+:root {
+  --bg:    #0A0E27;
+  --white: #FFFFFF;
+  --o1:    #E4002B;
+  --o2:    #7A0019;
+  --grad:  linear-gradient(135deg, #E4002B 0%, #7A0019 100%);
+  --accent-blue: #1E3A8A;
+  --dim:   rgba(255,255,255,.86);
+  --dim2:  rgba(255,255,255,.62);
+  --dim3:  rgba(255,255,255,.34);
+  --line:  rgba(255,255,255,.1);
+  --glass-bg: rgba(255,255,255,.05);
+  --glass-bg-strong: rgba(255,255,255,.08);
+  --glass-border: rgba(255,255,255,.18);
+  --tex-line-color: rgba(255,255,255,.03);
+  --card-glow: rgba(255,255,255,.07);
+  --font:  'spent-vf', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+}
+
+/* Light-mode sections — every component below reads its color off these
+   tokens, so overriding them here is enough to flip an entire slide */
+.slide.light-mode {
+  --bg:    #F5F6FA;
+  --white: #0A0E27;
+  --dim:   rgba(10,14,39,.82);
+  --dim2:  rgba(10,14,39,.6);
+  --dim3:  rgba(10,14,39,.36);
+  --line:  rgba(10,14,39,.13);
+  --glass-bg: rgba(10,14,39,.045);
+  --glass-bg-strong: rgba(10,14,39,.07);
+  --glass-border: rgba(10,14,39,.16);
+  --tex-line-color: rgba(10,14,39,.05);
+  --card-glow: rgba(10,14,39,.05);
+  background: var(--bg);
+  color: var(--white);
+}
+.slide.light-mode strong { color:#0A0E27 }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font);
+  font-weight: 400;
+  font-variation-settings: 'wght' 400, 'wdth' 100;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+strong { color:#fff; font-weight:700 }
+
+/* ═══════════════════════════════════════════
+   PROGRESS BAR
+═══════════════════════════════════════════ */
+#prog { position:fixed; top:0; left:0; right:0; height:2px; z-index:9999; background:transparent }
+#prog-bar { height:100%; width:0; background:var(--grad); transition:width .08s linear; box-shadow:0 0 12px rgba(122,0,25,.5) }
+
+/* ═══════════════════════════════════════════
+   CAN TRACK — vertical scroll progress, right edge
+═══════════════════════════════════════════ */
+#can-track-wrap {
+  position: fixed;
+  top: 90px; bottom: 90px;
+  right: 28px;
+  width: 10px;
+  z-index: 9000;
+  pointer-events: none;
+}
+#can-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -1px 0 rgba(0,0,0,.2),
+    0 8px 24px rgba(0,0,0,.35);
+  overflow: hidden;
+}
+#can-track-fill {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 0%;
+  border-radius: 100px;
+  background: #E4002B !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+  transition: height .12s linear;
+}
+#can-thumb {
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  width: 28px;
+  height: auto;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.45));
+  transition: top .12s linear, opacity .2s ease;
+  pointer-events: none;
+}
+@media (max-width: 960px) {
+  #can-track-wrap { display: none; }
+}
+
+/* ═══════════════════════════════════════════
+   MENU BUTTON — single pill, top center
+═══════════════════════════════════════════ */
+#menu-btn {
+  position: fixed;
+  top: 20px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 9001;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px 18px;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 100px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.2),
+    0 10px 30px rgba(0,0,0,.45);
+  color: var(--white);
+  font-family: var(--font);
+  cursor: pointer;
+  transition: border-color .2s, background .2s, transform .2s;
+  overflow: hidden;
+}
+#menu-btn::before {
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background: radial-gradient(ellipse 140% 60% at 30% -20%, rgba(255,255,255,.22) 0%, transparent 60%);
+}
+#menu-btn:hover {
+  border-color: rgba(228,0,43,.45);
+  transform:translateX(-50%) translateY(-1px);
+}
+.menu-btn-ico { position:relative; display:flex; flex-direction:column; justify-content:center; gap:5px; width:18px; height:14px }
+.menu-btn-ico span { display:block; height:2px; width:100%; border-radius:1px; background:var(--white); transition: transform .35s cubic-bezier(.16,1,.3,1), opacity .25s ease }
+body.menu-open .menu-btn-ico span:nth-child(1) { transform: translateY(7px) rotate(45deg) }
+body.menu-open .menu-btn-ico span:nth-child(2) { opacity:0; transform:scaleX(0) }
+body.menu-open .menu-btn-ico span:nth-child(3) { transform: translateY(-7px) rotate(-45deg) }
+.menu-btn-label { font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase }
+.menu-btn-count {
+  font-size:10px; font-weight:700;
+  background: var(--grad); color:#fff;
+  border-radius:100px; padding:5px 10px; letter-spacing:.02em;
+}
+
+/* ═══════════════════════════════════════════
+   MENU OVERLAY — fullscreen color-flip takeover
+═══════════════════════════════════════════ */
+#menu-overlay {
+  position: fixed; inset:0; z-index:9500;
+  background: rgba(5,8,20,.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden;
+  transition: opacity .4s ease, visibility 0s linear .4s;
+  padding: 24px;
+}
+#menu-overlay.open { opacity:1; visibility:visible; transition: opacity .4s ease }
+
+#menu-panel {
+  width: min(640px, 100%);
+  max-height: 78vh;
+  margin: 0;
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 28px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.15),
+    0 30px 80px rgba(0,0,0,.55);
+  padding: 32px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.menu-panel-head {
+  display:flex; align-items:baseline; justify-content:space-between;
+  padding-bottom: 28px;
+  border-bottom: 2px solid rgba(255,255,255,.14);
+  margin-bottom: 10px;
+}
+.menu-panel-title {
+  font-family: var(--font); font-weight:800; font-variation-settings:'wght' 800,'wdth' 92;
+  font-size: clamp(24px,3vw,36px); text-transform:uppercase; letter-spacing:-.02em; color:#ffffff;
+}
+#menu-close {
+  width:38px; height:38px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.08);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
+  color:#ffffff; font-size:16px; cursor:pointer; line-height:1;
+  transition: background .2s, border-color .2s, transform .2s;
+  flex-shrink:0;
+}
+#menu-close:hover { background:rgba(228,0,43,.15); border-color:rgba(228,0,43,.5); transform:rotate(90deg) }
+
+.menu-list {
+  display:flex; flex-direction:column;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  margin-top: 4px;
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(228,0,43,.5) transparent;
+}
+.menu-list::-webkit-scrollbar { width: 6px; }
+.menu-list::-webkit-scrollbar-thumb { background: rgba(228,0,43,.5); border-radius: 100px; }
+.menu-item {
+  display:flex; align-items:baseline; gap:22px;
+  padding: 18px 4px;
+  text-decoration:none;
+  color: rgba(255,255,255,.85);
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  position: relative;
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: transform .3s ease;
+}
+#menu-overlay.open .menu-item {
+  animation: menuItemIn .5s cubic-bezier(.16,1,.3,1) forwards;
+  animation-delay: calc(var(--i, 0) * 28ms);
+}
+@keyframes menuItemIn { to { opacity:1; transform:translateY(0) } }
+.menu-item::after {
+  content:''; position:absolute; left:4px; right:4px; bottom:-1px; height:2px;
+  background: var(--grad); transform:scaleX(0); transform-origin:left;
+  transition: transform .4s cubic-bezier(.16,1,.3,1);
+}
+.menu-item:hover::after { transform:scaleX(1) }
+.menu-item:hover .mi-title { color:#E4002B; transform:translateX(6px) }
+.mi-num {
+  font-family: var(--font);
+  font-size:13px; font-weight:700; letter-spacing:.05em;
+  color: #E4002B;
+  min-width:30px;
+}
+.mi-title {
+  font-family: var(--font);
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 800;
+  font-variation-settings: 'wght' 800, 'wdth' 94;
+  text-transform: uppercase;
+  letter-spacing: -.02em;
+  line-height: 1.3;
+  padding: 2px 0;
+  transition: color .25s ease, transform .25s ease;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════ */
+[data-r] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 1.15s cubic-bezier(.16,1,.3,1), transform 1.15s cubic-bezier(.16,1,.3,1);
+  transition-delay: .1s;
+}
+[data-r].vis { opacity:1; transform:none }
+[data-d="1"] { transition-delay:.18s }
+[data-d="2"] { transition-delay:.3s }
+[data-d="3"] { transition-delay:.42s }
+
+.headline[data-r] { transform: translateY(46px) scale(.92); transition-timing-function: cubic-bezier(.16,1,.3,1) }
+.headline[data-r].vis { transform: none }
+.al-l .headline[data-r] { transform-origin: left center }
+.al-r .headline[data-r] { transform-origin: right center }
+.eyebrow[data-r] { transform: translateX(-24px) }
+.eyebrow[data-r].vis { transform: none }
+.al-r .eyebrow[data-r] { transform: translateX(24px) }
+.al-r .eyebrow[data-r].vis { transform: none }
+
+/* ═══════════════════════════════════════════
+   SLIDE BASE — 16:9 one per screen
+═══════════════════════════════════════════ */
+section.slide {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display:flex;
+  align-items:center;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--white);
+}
+section.slide:first-of-type { border-top:none }
+
+/* giant ghost index number, bleeding off the bottom-right corner */
+section.slide[data-num]::before {
+  content: attr(data-num);
+  position: absolute;
+  z-index: 0;
+  bottom: -6vw; right: 1vw;
+  font-family: var(--font);
+  font-weight: 900;
+  font-variation-settings: 'wght' 900, 'wdth' 68;
+  font-size: 36vw;
+  line-height: .8;
+  color: var(--white);
+  opacity: .045;
+  letter-spacing: -.04em;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+section.slide:has(.al-r)[data-num]::before { right:auto; left:1vw }
+section.slide.no-ghost[data-num]::before { content:none }
+
+.slide-inner {
+  position: relative; z-index:2;
+  width:100%; max-width:1280px;
+  margin:0 auto; padding:0 80px;
+  display:flex;
+}
+.al-l { justify-content:flex-start }
+.al-r { justify-content:flex-end }
+.al-c { justify-content:center; text-align:center }
+.al-c .block { display:flex; flex-direction:column; align-items:center }
+
+.block { width:100%; max-width:540px }
+.al-c .block { max-width:760px }
+
+/* ═══════════════════════════════════════════
+   BACKGROUND LAYERS (placeholders, ready for images)
+═══════════════════════════════════════════ */
+.bg-photo { position:absolute; inset:0; background-size:cover; background-position:center; z-index:0 }
+.bg-video { position:absolute; inset:0; z-index:0; width:100%; height:100%; object-fit:cover }
+.bg-fade-c { position:absolute; inset:0; z-index:0;
+  background: radial-gradient(ellipse at center, rgba(10,14,39,.32) 0%, rgba(10,14,39,.74) 58%, rgba(10,14,39,.97) 100%); }
+.bg-fade-l { position:absolute; inset:0; z-index:0;
+  background: linear-gradient(90deg, rgba(10,14,39,1) 0%, rgba(10,14,39,.95) 30%, rgba(10,14,39,.72) 54%, rgba(10,14,39,.2) 78%, rgba(10,14,39,0) 95%); }
+.bg-fade-r { position:absolute; inset:0; z-index:0;
+  background: linear-gradient(270deg, rgba(10,14,39,1) 0%, rgba(10,14,39,.95) 30%, rgba(10,14,39,.72) 54%, rgba(10,14,39,.2) 78%, rgba(10,14,39,0) 95%); }
+.bg-fade-l-soft { position:absolute; inset:0; z-index:0;
+  background: linear-gradient(90deg, rgba(10,14,39,.62) 0%, rgba(10,14,39,.42) 30%, rgba(10,14,39,.2) 54%, rgba(10,14,39,.06) 78%, rgba(10,14,39,0) 95%); }
+
+.bg-hero               { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/hero.png') }
+.bg-publico             { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/publico-jovem.jpg') }
+.bg-referencias         { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/referencias.png') }
+.bg-pergunta            { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/pergunta.png') }
+.bg-trailer             { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/trailer.jpg') }
+.bg-dia-creator         { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/dia-creator.png') }
+.bg-show-finais         { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/show-finais.png') }
+.bg-digital             { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/digital.png') }
+.bg-premiacao           { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/premiacao.png') }
+.bg-divider-1           { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/divider-conteudo.jpg') }
+.bg-divider-2           { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/divider-producao.jpg') }
+.bg-divider-3           { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/divider-creators.jpg') }
+.bg-modelo-tradicional  { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/modelo-tradicional.png') }
+.bg-novo-modelo         { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/novo-modelo.png') }
+.bg-formato             { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/formato.png') }
+.bg-produto             { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/produto.png') }
+.bg-distribuicao        { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/distribuicao.png') }
+.bg-hopps-combine       { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/hopps-combine.png') }
+.bg-draft               { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/draft.png') }
+.bg-estrutura           { background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/estrutura-das-equipes.png') }
+
+.bg-photo.flipped { transform:scaleX(-1) }
+.bg-photo { transition: background-image .4s ease, transform .5s ease }
+
+.bg-fade-r-soft { position:absolute; inset:0; z-index:0;
+  background: linear-gradient(270deg, rgba(10,14,39,.7) 0%, rgba(10,14,39,.5) 30%, rgba(10,14,39,.24) 54%, rgba(10,14,39,.06) 78%, rgba(10,14,39,0) 95%); }
+
+/* mobile-only dark overlay for photo slides that have no desktop fade div */
+.mob-dark { display:none }
+
+/* ambient glow orbs — atmosphere before photos are added */
+.ambient-orb { position:absolute; border-radius:50%; pointer-events:none; filter:blur(70px); z-index:0 }
+.orb-1 { width:640px; height:640px; top:-180px; right:-160px; opacity:.55;
+  background:radial-gradient(circle, rgba(122,0,25,.16) 0%, transparent 70%); animation:orbf 11s ease-in-out infinite }
+.orb-2 { width:560px; height:560px; bottom:-150px; left:-150px; opacity:.5;
+  background:radial-gradient(circle, rgba(228,0,43,.18) 0%, transparent 70%); animation:orbf 13s ease-in-out infinite reverse }
+.orb-3 { width:600px; height:600px; top:15%; left:52%; opacity:.45;
+  background:radial-gradient(circle, rgba(122,0,25,.13) 0%, transparent 70%); animation:orbf 15s ease-in-out infinite }
+@keyframes orbf { 0%,100%{ transform:scale(1); opacity:.5 } 50%{ transform:scale(1.18); opacity:.24 } }
+
+/* ═══════════════════════════════════════════
+   ABSTRACT TEXTURE — slides with no background photo
+═══════════════════════════════════════════ */
+.bg-texture { position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none }
+.tex-blob { position:absolute; border-radius:50%; filter:blur(110px) }
+.tex-blob-a { width:62vw; height:62vw; left:-18%; top:-30%;
+  background:radial-gradient(circle, rgba(228,0,43,.16) 0%, transparent 70%);
+  animation: texDriftA 30s ease-in-out infinite }
+.tex-blob-b { width:56vw; height:56vw; right:-16%; bottom:-26%;
+  background:radial-gradient(circle, rgba(122,0,25,.14) 0%, transparent 70%);
+  animation: texDriftB 36s ease-in-out infinite }
+.tex-blob-c { width:38vw; height:38vw; left:30%; top:36%;
+  background:radial-gradient(circle, rgba(122,0,25,.07) 0%, transparent 70%);
+  animation: texDriftA 44s ease-in-out infinite reverse }
+.tex-lines { position:absolute; inset:-15%;
+  background-image: repeating-linear-gradient(118deg, var(--tex-line-color) 0px, var(--tex-line-color) 1px, transparent 1px, transparent 72px);
+  animation: texPan 55s linear infinite; opacity:.55 }
+@keyframes texDriftA { 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(6%,8%) scale(1.16) } }
+@keyframes texDriftB { 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(-7%,-6%) scale(1.12) } }
+@keyframes texPan { 0%{ transform:translate(0,0) } 100%{ transform:translate(72px,72px) } }
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════════ */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  font-variation-settings: 'wght' 620, 'wdth' 100;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: inline-block;
+  color: #75b2fe;
+}
+/* Regras, Calendário, Fechamento keep the original red brand-gradient eyebrow */
+#regras .eyebrow,
+#calendario .eyebrow,
+#fechamento .eyebrow {
+  color: transparent;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+
+/* Divider slides — only "Desenhar Mais" (26) switches to the new blue; Propriedades (29),
+   Sendo Parte da Construção (35) and Tabela de Produção (36) keep their current look */
+#divider-desenhar .divider-num { color: #75b2fe; }
+
+/* Slide 36 — same treatment as slide 18 (centered, one line), just a longer string
+   so the size caps lower than the default huge divider-title scale */
+#divider-tabela-producao .headline.divider-title {
+  white-space: nowrap;
+  font-size: clamp(24px, 4.4vw, 76px);
+}
+
+.rule { width:36px; height:2px; background:var(--grad); margin:20px 0; border-radius:2px }
+.al-c .rule { margin-left:auto; margin-right:auto }
+
+.headline {
+  font-family: var(--font);
+  font-weight: 850;
+  font-variation-settings: 'wght' 850, 'wdth' 100;
+  font-size: clamp(38px, 6.4vw, 92px);
+  line-height: 1.04;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  padding-top: .08em;
+}
+.headline .hi {
+  background: var(--grad);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  font-variation-settings: 'wght' 900, 'wdth' 100;
+}
+
+.hero-title { font-size: clamp(52px, 9vw, 128px) }
+.divider-title { font-size: clamp(64px, 11vw, 160px) }
+.big-q { font-size: clamp(34px, 5.4vw, 72px) }
+
+.subtitle {
+  font-size: clamp(18px, 2vw, 23px);
+  font-weight: 400;
+  font-variation-settings: 'wght' 380, 'wdth' 100;
+  color: var(--dim2);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.body-text {
+  font-size: clamp(16px, 1.6vw, 19px);
+  font-weight: 400;
+  font-variation-settings: 'wght' 380, 'wdth' 100;
+  color: var(--dim);
+  line-height: 1.8;
+  max-width: 100%;
+}
+
+/* ═══════════════════════════════════════════
+   PLAIN LISTS
+═══════════════════════════════════════════ */
+.list-plain { list-style:none; display:flex; flex-direction:column; margin-top:22px; width:100% }
+.list-plain li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  display:flex; align-items:baseline; gap:14px;
+  font-size: clamp(16px, 1.7vw, 19px);
+  font-variation-settings: 'wght' 420, 'wdth' 100;
+  color: var(--dim);
+  text-align:left;
+}
+.list-plain li:first-child { border-top:1px solid var(--line) }
+.list-plain li::before { content:'—'; color:var(--o2); font-weight:700; flex-shrink:0 }
+.list-plain.compact li { padding:14px 0; font-size:clamp(15px, 1.5vw, 17px) }
+.al-r .list-plain li { text-align:right; flex-direction:row-reverse }
+.al-c .list-plain li { justify-content:center }
+
+/* ═══════════════════════════════════════════
+   PILL LIST — rounded chip topics (replaces list-plain everywhere)
+═══════════════════════════════════════════ */
+.pill-list { list-style:none; display:flex; flex-wrap:wrap; gap:14px; margin-top:26px; width:100% }
+.pill-list li {
+  padding: 17px 28px;
+  border-radius: 100px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-weight: 600;
+  font-variation-settings: 'wght' 600, 'wdth' 100;
+  color: var(--white);
+  transition: background .25s, border-color .25s, transform .2s;
+}
+.pill-list li:hover { background:var(--glass-bg-strong); border-color:rgba(122,0,25,.4); transform:translateY(-2px) }
+.pill-list li strong { color:var(--o2); font-weight:700 }
+.al-r .pill-list { justify-content:flex-end }
+.al-c .pill-list { justify-content:center }
+@media (max-width:960px) {
+  .pill-list li { padding:14px 22px; font-size:15px }
+}
+
+/* ═══════════════════════════════════════════
+   BADGES
+═══════════════════════════════════════════ */
+.badge-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:22px }
+.badge {
+  font-size: 12px; font-weight:500;
+  font-variation-settings: 'wght' 500, 'wdth' 100;
+  letter-spacing: .03em;
+  padding: 9px 18px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.18);
+  color: var(--dim2);
+}
+.badge.grad { background:var(--grad); color:#fff; font-weight:700; border:none; padding:10px 19px }
+
+/* ═══════════════════════════════════════════
+   CHANNEL NAV (Digital) — floating glass pill, Gamers-style
+═══════════════════════════════════════════ */
+.channel-nav {
+  display: inline-flex; align-items:center; gap:2px; flex-wrap:wrap;
+  padding: 6px;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 100px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.2),
+    0 10px 30px rgba(0,0,0,.45);
+  margin-top: 26px;
+}
+.channel-nav span {
+  display: inline-flex; align-items:center; gap:8px;
+  font-family: var(--font);
+  font-size: 12px; font-weight:600;
+  font-variation-settings:'wght' 600, 'wdth' 100;
+  letter-spacing:.04em; text-transform:uppercase;
+  color: var(--dim2);
+  padding: 10px 18px;
+  border-radius: 100px;
+  transition: color .2s, background .2s;
+}
+.channel-nav span svg { width:15px; height:15px; flex-shrink:0 }
+.channel-nav span.icon-only { padding:10px; display:inline-flex; align-items:center; justify-content:center }
+.channel-nav span:hover { color:var(--white); background:var(--glass-bg-strong) }
+
+/* ═══════════════════════════════════════════
+   STAT ROW (Formato da Liga)
+═══════════════════════════════════════════ */
+.stat-row {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px; background:var(--line);
+  margin-top:26px; width:100%;
+  border-radius: 28px; overflow:hidden;
+}
+.stat { position:relative; background:var(--bg); padding:42px 26px; overflow:hidden }
+.stat::before { content:''; position:absolute; inset:0; pointer-events:none;
+  background: radial-gradient(circle at 90% 8%, var(--card-glow) 0%, transparent 55%); }
+.stat-num {
+  font-family:var(--font); font-weight:900;
+  font-variation-settings:'wght' 900, 'wdth' 85;
+  font-size: clamp(48px, 7vw, 90px);
+  line-height:.9;
+  background:var(--grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.stat-label { margin-top:12px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim2) }
+
+/* ═══════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════ */
+.tab-group { width:100%; margin-top:10px }
+.tab-btns { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px }
+#conteudo-centro .tab-group { margin-top:40px }
+#conteudo-centro .tab-btns { margin-bottom:40px }
+.tab-btn {
+  font-family: var(--font);
+  font-size: 12px; font-weight:600;
+  font-variation-settings:'wght' 560, 'wdth' 100;
+  letter-spacing:.02em;
+  padding: 10px 18px;
+  border-radius: 100px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--dim2);
+  cursor: pointer;
+  transition: all .25s;
+}
+.tab-btn:hover { color:#fff; border-color:rgba(255,255,255,.34) }
+.tab-btn.on { background:var(--grad); color:#fff; border:none; padding:11px 19px; font-weight:700 }
+.tab-panel { display:none }
+.tab-panel.on { display:block; animation:fadeUp .5s ease }
+@keyframes fadeUp { from{ opacity:0; transform:translateY(10px) } to{ opacity:1; transform:none } }
+.tab-time {
+  font-size: 11px; letter-spacing:.18em; text-transform:uppercase; font-weight:700;
+  background:var(--grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  margin-bottom: 10px;
+}
+
+/* ═══════════════════════════════════════════
+   CAROUSEL (Regras — one button cycles panels)
+═══════════════════════════════════════════ */
+.carousel-wrap { width:100%; margin-top:10px }
+.carousel { overflow:hidden; width:100% }
+.carousel-track { display:flex; transition: transform .55s cubic-bezier(.16,1,.3,1) }
+.carousel-slide { width:100%; min-width:100%; flex-shrink:0 }
+.carousel-heading {
+  font-family: var(--font); font-weight:800; font-variation-settings:'wght' 800,'wdth' 100;
+  font-size: clamp(20px,2.4vw,26px); text-transform:uppercase; letter-spacing:-.01em; margin-bottom:10px;
+}
+.carousel-controls { display:flex; flex-direction:column; align-items:flex-start; gap:14px; margin-top:30px }
+.al-c .carousel-controls, .al-c .carousel-slide { align-items:center; text-align:center }
+.carousel-step { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim3); font-weight:600 }
+.carousel-next-btn {
+  font-family: var(--font);
+  font-size: 13px; font-weight:700;
+  font-variation-settings:'wght' 700, 'wdth' 100;
+  letter-spacing:.02em;
+  padding: 6px 6px 6px 24px;
+  border-radius: 100px;
+  background: var(--glass-bg);
+  color: var(--white);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  display:inline-flex; align-items:center; gap:16px;
+  transition: transform .2s, box-shadow .2s, border-color .2s, filter .2s;
+}
+.carousel-next-btn:hover { transform:translateY(-2px) scale(1.03); border-color:rgba(122,0,25,.45); filter:brightness(1.08) }
+.carousel-next-btn::after {
+  content:'→'; font-weight:800; font-size:15px;
+  width:40px; height:40px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  color: var(--o1);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.2),
+    0 10px 30px rgba(0,0,0,.45);
+}
+
+/* ═══════════════════════════════════════════
+   REGRAS — court diagram + score boxes
+═══════════════════════════════════════════ */
+.regras-row { display:flex; align-items:center; gap:56px; width:100% }
+.regras-text-col { flex:1 1 420px; max-width:460px; text-align:left }
+.regras-court-col { flex:1 1 300px; display:flex; justify-content:center }
+.court-wrap { position:relative; width:100%; max-width:420px; max-height:82vh; aspect-ratio:210/400; margin:0 auto; display:flex; align-items:center; justify-content:center; transition:aspect-ratio .4s ease }
+.court-wrap.half { aspect-ratio:210/200 }
+.court-svg { width:100%; height:100%; display:block }
+.court-svg .court-line { stroke:var(--dim3); stroke-width:2; fill:none }
+.court-dot { opacity:0; transition:opacity .4s ease }
+.dot-black { fill:var(--white) }
+.dot-red { fill:var(--o1) }
+.regras-score-boxes { display:none; align-items:center; justify-content:center; width:100% }
+.regras-score-boxes .score-box {
+  width:150px; flex-shrink:0;
+  margin-left:-42px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.2),
+    0 10px 30px rgba(0,0,0,.45);
+  border-radius:22px;
+  padding:44px 14px;
+  text-align:center;
+  transform-origin:bottom center;
+  transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s ease, z-index 0s;
+}
+.regras-score-boxes .score-box:first-child { margin-left:0 }
+.regras-score-boxes .score-box:nth-child(1) { transform:rotate(-12deg) translateY(22px); z-index:1 }
+.regras-score-boxes .score-box:nth-child(2) { transform:rotate(0deg) translateY(-12px); z-index:3 }
+.regras-score-boxes .score-box:nth-child(3) { transform:rotate(12deg) translateY(22px); z-index:1 }
+.regras-score-boxes .score-box:hover { transform:translateY(-16px) rotate(0deg) scale(1.08); z-index:10; box-shadow:0 30px 54px rgba(0,0,0,.55) }
+.score-label { font-size:11px; letter-spacing:.13em; text-transform:uppercase; color:var(--o1); font-weight:700; margin-bottom:16px }
+.score-val {
+  font-family:var(--font); font-weight:900; font-variation-settings:'wght' 900,'wdth' 85;
+  font-size:clamp(32px,3.8vw,44px);
+  background:var(--grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+@media (max-width:960px) {
+  .regras-row { flex-direction:column; gap:36px }
+  .regras-text-col { max-width:100% }
+  .court-wrap { max-width:280px; max-height:60vh }
+  .regras-score-boxes { flex-wrap:wrap }
+  .regras-score-boxes .score-box { margin-left:0; width:calc(50% - 6px); transform:none !important; margin-bottom:10px }
+  .regras-score-boxes .score-box:hover { transform:none !important }
+}
+
+/* ═══════════════════════════════════════════
+   VER MAIS BUTTON (divider slides)
+═══════════════════════════════════════════ */
+.ver-mais-btn {
+  font-family: var(--font);
+  font-size: 12px; font-weight:600;
+  font-variation-settings:'wght' 600, 'wdth' 100;
+  letter-spacing:.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 6px 6px 6px 24px;
+  border-radius: 100px;
+  border: 1px solid var(--glass-border);
+  color: var(--white);
+  display: inline-flex; align-items:center; gap:16px;
+  margin-top: 30px;
+  transition: background .25s, border-color .25s, transform .2s;
+}
+.ver-mais-btn:hover { background:rgba(122,0,25,.1); border-color:rgba(122,0,25,.5); transform:translateY(-2px) scale(1.03) }
+.ver-mais-btn::after {
+  content:'→'; font-weight:800; font-size:14px; text-transform:none; letter-spacing:0;
+  width:34px; height:34px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  color: var(--o1);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.2),
+    0 10px 30px rgba(0,0,0,.45);
+}
+
+/* ═══════════════════════════════════════════
+   ROSTER GRID (Presidentes)
+═══════════════════════════════════════════ */
+.roster-grid {
+  display:grid; grid-template-columns:repeat(5,1fr);
+  gap:1px; background:var(--line);
+  width:100%; margin-top:26px;
+  border-radius: 28px; overflow:hidden;
+}
+.roster-card {
+  position:relative; display:flex; flex-direction:column; text-align:left;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
+}
+.roster-card::before { content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background: radial-gradient(circle at 88% 6%, var(--card-glow) 0%, transparent 55%); }
+.roster-photo { aspect-ratio:1/1.05; overflow:hidden; background:rgba(255,255,255,.05) }
+.roster-photo img { width:100%; height:100%; object-fit:cover; object-position:top center }
+.roster-placeholder { display:flex; align-items:center; justify-content:center; font-size:38px; color:rgba(255,255,255,.15); font-weight:800 }
+.roster-body { padding:16px 14px }
+.roster-name { font-weight:700; font-size:14.5px; font-variation-settings:'wght' 700,'wdth' 100 }
+.roster-tag { margin-top:6px; font-size:9px; letter-spacing:.12em; text-transform:uppercase; font-weight:600 }
+
+/* fan / card-deck layout */
+.roster-grid.fan {
+  display:flex; justify-content:center; align-items:flex-end;
+  background:none; border-radius:0; overflow:visible;
+  padding: 64px 0 6px;
+}
+.roster-grid.fan .roster-card {
+  width: 200px; flex-shrink:0;
+  margin-left: -48px;
+  border-radius: 20px;
+  box-shadow: 0 24px 46px rgba(0,0,0,.55);
+  transform-origin: bottom center;
+  transition: transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s ease, z-index 0s;
+}
+.roster-grid.fan .roster-card:first-child { margin-left:0 }
+.roster-grid.fan .roster-card:nth-child(1) { transform:rotate(-18deg) translateY(36px); z-index:1 }
+.roster-grid.fan .roster-card:nth-child(2) { transform:rotate(-9deg) translateY(14px); z-index:2 }
+.roster-grid.fan .roster-card:nth-child(3) { transform:rotate(0deg) translateY(-6px); z-index:3 }
+.roster-grid.fan .roster-card:nth-child(4) { transform:rotate(9deg) translateY(14px); z-index:2 }
+.roster-grid.fan .roster-card:nth-child(5) { transform:rotate(18deg) translateY(36px); z-index:1 }
+.roster-grid.fan .roster-card:hover { transform:translateY(-22px) rotate(0deg) scale(1.08); z-index:10; box-shadow:0 34px 64px rgba(0,0,0,.65) }
+.roster-grid.fan .roster-card.featured { width:260px; z-index:6 }
+.roster-grid.fan .roster-card.featured .roster-name { font-size:17px }
+.roster-grid.fan .roster-card.featured .roster-tag { font-size:10px }
+@media (max-width:960px) {
+  .roster-grid.fan { flex-wrap:wrap; padding:0 }
+  .roster-grid.fan .roster-card { margin-left:0; width:calc(50% - 6px); transform:none !important; box-shadow:none; border-radius:14px; margin-bottom:10px }
+  .roster-grid.fan .roster-card.featured { width:calc(50% - 6px) }
+  .roster-grid.fan .roster-card:hover { transform:none !important }
+}
+.roster-tag.confirmed { color:#fff }
+.roster-tag.pending { color:var(--dim3) }
+.roster-card.pending .roster-photo img { filter:grayscale(1) brightness(.7); opacity:.55 }
+.roster-card.pending .roster-name { opacity:.6 }
+
+/* ═══════════════════════════════════════════
+   TIMELINE (Calendário)
+═══════════════════════════════════════════ */
+.timeline {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--line);
+  width:100%; margin-top:26px;
+  border-radius: 28px; overflow:hidden;
+}
+.timeline.timeline-6 { grid-template-columns:repeat(6,1fr) }
+.timeline-6 .tl-step { padding:26px 16px }
+.timeline.timeline-8 { grid-template-columns:repeat(4,1fr) }
+.timeline-8 .tl-step { padding:24px 16px }
+.tl-step { position:relative; background:var(--bg); padding:30px 22px; text-align:left; overflow:hidden }
+.tl-step::before { content:''; position:absolute; top:0; left:22px; right:22px; height:2px; background:var(--grad); border-radius:2px }
+.tl-week {
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase; font-weight:700;
+  background:var(--grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  margin-top:16px; margin-bottom:14px;
+}
+.tl-desc { font-size:16px; color:var(--dim); line-height:1.6 }
+
+/* ═══════════════════════════════════════════
+   PRIZE CARDS (Premiação)
+═══════════════════════════════════════════ */
+.prize-grid { display:flex; flex-direction:column; gap:14px; margin-top:24px; width:100% }
+.prize-card {
+  position: relative; overflow:hidden;
+  border: 1px solid rgba(122,0,25,.25);
+  background: rgba(122,0,25,.05);
+  border-radius: 20px;
+  padding: 26px 28px;
+}
+.prize-card::before { content:''; position:absolute; inset:0; pointer-events:none;
+  background: radial-gradient(circle at 92% 6%, var(--card-glow) 0%, transparent 55%); }
+.prize-label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--o2); font-weight:700; margin-bottom:10px }
+.prize-val { font-family:var(--font); font-weight:800; font-variation-settings:'wght' 800,'wdth' 100; font-size:clamp(22px,3vw,32px) }
+.prize-desc { margin-top:8px; font-size:15.5px; color:var(--dim2) }
+
+/* ═══════════════════════════════════════════
+   DIVIDER SLIDES
+═══════════════════════════════════════════ */
+.divider-num { font-size:12px; letter-spacing:.35em; color:var(--dim3); margin-bottom:26px; font-weight:600 }
+
+/* ═══════════════════════════════════════════
+   NUMBERED CARD ROW (Momentos, Vestuário & Merchandising)
+═══════════════════════════════════════════ */
+.numbered-cards { display:flex; gap:16px; margin-top:28px; width:100%; flex-wrap:wrap }
+.numbered-cards .n-card {
+  flex:1 1 200px; position:relative; overflow:hidden;
+  border:1px solid var(--line); background:var(--glass-bg);
+  border-radius:20px; padding:26px 22px;
+}
+.numbered-cards .n-card::before { content:''; position:absolute; inset:0; pointer-events:none;
+  background: radial-gradient(circle at 90% 8%, var(--card-glow) 0%, transparent 55%); }
+.has-photo .numbered-cards .n-card { background:rgba(10,14,39,.6) }
+.n-badge {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:34px; height:34px; border-radius:50%;
+  background:var(--grad); color:#fff;
+  font-family:var(--font); font-weight:800; font-size:14px;
+  margin-bottom:16px;
+}
+.n-title { font-weight:700; font-size:16px; font-variation-settings:'wght' 700,'wdth' 100; margin-bottom:8px }
+.n-desc { font-size:14px; color:var(--dim2); line-height:1.6 }
+
+/* ═══════════════════════════════════════════
+   PROPERTY CARD GRID (Mapa de Propriedades, Creators, Propriedades Físicas, Digital e Premiações)
+═══════════════════════════════════════════ */
+.prop-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--line);
+  margin-top:32px; width:100%; border-radius:28px; overflow:hidden }
+.prop-grid.cols-3 { grid-template-columns:repeat(3,1fr) }
+.prop-card { position:relative; background:var(--bg); padding:30px 20px; text-align:left; overflow:hidden }
+.prop-card::before { content:''; position:absolute; inset:0; pointer-events:none;
+  background: radial-gradient(circle at 90% 8%, var(--card-glow) 0%, transparent 55%); }
+.prop-num { font-size:12px; color:var(--dim3); font-weight:700; margin-bottom:14px }
+.prop-title { font-weight:700; font-size:15px; font-variation-settings:'wght' 700,'wdth' 100; margin-bottom:8px; line-height:1.2 }
+.prop-desc { font-size:12.5px; color:var(--dim2); line-height:1.5 }
+
+/* ═══════════════════════════════════════════
+   READABILITY BUMP — closed-state font-size increase,
+   scoped to Estrutura, Mapa de Propriedades, Propriedades
+   Físicas, Vestuário & Merchandising, Digital e Premiações,
+   Momentos only (does not affect these classes elsewhere)
+═══════════════════════════════════════════ */
+#estrutura .pill-list li { font-size: clamp(16px, 1.8vw, 19px) }
+#mapa-propriedades .prop-num,
+#propriedades-fisicas .prop-num,
+#digital-premiacoes .prop-num { font-size: 13px }
+#mapa-propriedades .prop-title,
+#propriedades-fisicas .prop-title,
+#digital-premiacoes .prop-title { font-size: 17px }
+#mapa-propriedades .prop-desc,
+#propriedades-fisicas .prop-desc,
+#digital-premiacoes .prop-desc { font-size: 14px; line-height:1.6 }
+#vestuario-merchandising .n-title,
+#momentos .n-title { font-size: 18px }
+#vestuario-merchandising .n-desc,
+#momentos .n-desc { font-size: 15.5px }
+
+/* ═══════════════════════════════════════════
+   EXPANDABLE CARDS — click-to-read, FLIP expansion
+   (Estrutura, Mapa de Propriedades, Propriedades Físicas,
+   Vestuário & Merchandising, Digital e Premiações, Momentos)
+═══════════════════════════════════════════ */
+[data-expandable="true"] { cursor: pointer; }
+
+.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease-in-out;
+}
+
+[data-expandable="true"].is-expanded {
+  position: fixed;
+  z-index: 9800;
+  margin: 0 !important;
+  cursor: default;
+  overflow-y: auto;
+  transition: top .35s ease-in-out, left .35s ease-in-out, width .35s ease-in-out, height .35s ease-in-out, box-shadow .35s ease-in-out;
+  box-shadow: 0 40px 100px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.2);
+}
+li[data-expandable="true"].is-expanded { display: block; list-style: none }
+
+.card-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  color: #fff; font-size: 14px; line-height:1;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease, background .2s, border-color .2s;
+  z-index: 2;
+}
+.card-close:hover { background: rgba(228,0,43,.25); border-color: rgba(228,0,43,.5); }
+[data-expandable="true"].is-expanded .card-close { opacity: 1; pointer-events: auto; }
+
+[data-expandable="true"].is-expanded .prop-title,
+[data-expandable="true"].is-expanded .n-title { font-size: 22px !important; margin-bottom:14px }
+[data-expandable="true"].is-expanded .prop-desc,
+[data-expandable="true"].is-expanded .n-desc { font-size: 17px !important; line-height:1.65 }
+[data-expandable="true"].is-expanded .prop-num { font-size: 14px !important }
+li[data-expandable="true"].is-expanded { font-size: 22px !important; line-height:1.5; display:flex; align-items:center; padding:32px }
+
+/* ═══════════════════════════════════════════
+   PRICING TABLE (Tabela Comercial)
+═══════════════════════════════════════════ */
+.table-scroll { width:100%; overflow-x:auto; margin-top:24px; border-radius:20px; border:1px solid var(--line) }
+.pricing-table { width:100%; border-collapse:collapse; min-width:760px; font-size:14px }
+.pricing-table th, .pricing-table td { padding:16px 18px; text-align:left; border-bottom:1px solid var(--line); color:#fff }
+.pricing-table thead th { background:var(--glass-bg-strong); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#fff; font-weight:700 }
+.pricing-table td.num { color:#fff; font-weight:800 }
+.pricing-table tbody tr:last-child td { border-bottom:none }
+.pricing-table tfoot td { border-top:2px solid var(--line); border-bottom:none; font-weight:800; background:var(--glass-bg); color:#fff }
+.pricing-table tfoot td.num { color:#fff; font-weight:900 }
+.pricing-note { margin-top:14px; font-size:12px; color:var(--dim3); font-style:italic }
+
+/* ═══════════════════════════════════════════
+   TABLE EDIT — floating button + edit modal for Tabela Comercial
+═══════════════════════════════════════════ */
+.table-edit-btn {
+  position:absolute; bottom:32px; right:32px; z-index:3;
+  padding:12px 22px; border-radius:100px;
+  font-family:var(--font); font-size:13px; font-weight:700;
+  background:
+    linear-gradient(var(--glass-bg-strong), var(--glass-bg)) padding-box,
+    linear-gradient(135deg, rgba(255,255,255,.35), rgba(228,0,43,.5)) border-box;
+  border:1px solid transparent; color:#fff;
+  backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%);
+  cursor:pointer;
+  box-shadow: 0 10px 26px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.2);
+  transition: transform .2s, background .2s;
+}
+.table-edit-btn:hover { transform:translateY(-2px) }
+
+.table-edit-modal {
+  position:fixed; inset:0; z-index:9700;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(10,14,39,.72);
+  backdrop-filter:blur(20px) saturate(140%); -webkit-backdrop-filter:blur(20px) saturate(140%);
+  opacity:0; visibility:hidden;
+  transition:opacity .35s ease, visibility 0s linear .35s;
+  padding:40px;
+}
+.table-edit-modal.open { opacity:1; visibility:visible; transition:opacity .35s ease }
+.table-edit-card {
+  position:relative; width:min(1100px,100%); max-height:86vh; overflow:auto;
+  background:
+    linear-gradient(rgba(255,255,255,.08), rgba(255,255,255,.03)) padding-box,
+    linear-gradient(135deg, rgba(255,255,255,.3), rgba(228,0,43,.4)) border-box;
+  border:1px solid transparent; border-radius:24px; padding:30px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+.table-edit-actions { display:flex; justify-content:flex-end; gap:10px; margin-bottom:18px; position:sticky; top:0 }
+.table-edit-icon-btn {
+  width:38px; height:38px; border-radius:50%; border:1px solid var(--glass-border);
+  background:var(--glass-bg); color:#fff; font-size:15px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s, transform .2s;
+}
+.table-edit-icon-btn:hover { transform:scale(1.08) }
+.table-edit-icon-btn.confirm { background:var(--grad); border:none; color:#fff }
+#table-edit-target .pricing-table td[contenteditable="true"] {
+  outline:none; cursor:text; border-radius:4px; transition:background .15s;
+}
+#table-edit-target .pricing-table td[contenteditable="true"]:hover { background:rgba(255,255,255,.05) }
+#table-edit-target .pricing-table td[contenteditable="true"]:focus { background:rgba(228,0,43,.16) }
+@media (max-width:960px) {
+  .table-edit-btn { bottom:16px; right:16px; padding:10px 16px; font-size:12px }
+  .table-edit-card { padding:18px; border-radius:18px }
+}
+
+/* ═══════════════════════════════════════════
+   CTA CONTACT (Fechamento)
+═══════════════════════════════════════════ */
+.cta-contact { display:flex; flex-direction:column; gap:0; margin-top:34px; width:100%; max-width:360px }
+.cta-row { display:flex; align-items:baseline; justify-content:space-between; gap:20px; padding:14px 0; border-bottom:1px solid var(--line) }
+.cta-row:first-child { border-top:1px solid var(--line) }
+.cta-label { font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--o2); font-weight:700 }
+.cta-val { font-size:16px; color:var(--dim2) }
+
+/* ═══════════════════════════════════════════
+   SCROLL CUE (hero)
+═══════════════════════════════════════════ */
+.scroll-cue { position:absolute; bottom:40px; left:80px; display:flex; align-items:center; gap:14px; z-index:2 }
+.scroll-cue span { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim2); font-weight:600 }
+.scroll-line { width:40px; height:1px; background:linear-gradient(to right, var(--dim2), transparent); animation:pulse 2s ease-in-out infinite }
+@keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+/* ═══════════════════════════════════════════
+   FILM GRAIN — cinematic noise over the whole deck
+═══════════════════════════════════════════ */
+.film-grain {
+  position:fixed; inset:0; z-index:9600; pointer-events:none;
+  mix-blend-mode:overlay; opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+
+/* ═══════════════════════════════════════════
+   RB-SHARD — signature triangle + zigzag-ribbon motif
+   Corner/edge-anchored only, always behind .slide-inner, non-interactive
+═══════════════════════════════════════════ */
+.rb-shard { position:absolute; z-index:1; pointer-events:none; overflow:visible }
+.rb-shard.pos-tr { top:-10%; right:-8% }
+.rb-shard.pos-tl { top:-10%; left:-8% }
+.rb-shard.pos-br { bottom:-10%; right:-8% }
+.rb-shard.pos-bl { bottom:-10%; left:-8% }
+.rb-shard.size-lg { width:380px; height:380px }
+.rb-shard.size-md { width:230px; height:230px }
+.rb-shard.size-sm { width:140px; height:140px }
+.rb-shard.rot-1 { transform:rotate(-8deg) }
+.rb-shard.rot-2 { transform:rotate(6deg) }
+.rb-shard.rot-3 { transform:rotate(14deg) }
+.rb-shard.rot-4 { transform:rotate(-14deg) }
+.rb-shard.rot-5 { transform:rotate(3deg) }
+.rb-shard.faint { opacity:.18 }
+
+/* ═══════════════════════════════════════════
+   PHOTO SLIDES — all copy solid white; only the small eyebrow
+   slide-marker keeps its red brand tint
+═══════════════════════════════════════════ */
+section.slide.has-photo .headline .hi {
+  background:none; -webkit-background-clip:initial; background-clip:initial; -webkit-text-fill-color:#fff; color:#fff;
+}
+section.slide.has-photo .subtitle,
+section.slide.has-photo .body-text,
+section.slide.has-photo .pill-list li strong,
+section.slide.has-photo .stat-label,
+section.slide.has-photo .prize-label,
+section.slide.has-photo .prize-desc,
+section.slide.has-photo .divider-num,
+section.slide.has-photo .n-desc,
+section.slide.has-photo .prop-num,
+section.slide.has-photo .prop-desc {
+  color:#fff;
+}
+section.slide.has-photo .stat-num {
+  background:none; -webkit-background-clip:initial; background-clip:initial; -webkit-text-fill-color:#fff; color:#fff;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width:960px) {
+  #menu-btn { top:12px; padding:9px 9px 9px 15px }
+  .menu-btn-label { display:none }
+  .slide-inner { padding:0 24px }
+  .block { max-width:100% }
+  .al-c .block { max-width:100% }
+  .stat-row, .timeline, .roster-grid { grid-template-columns:1fr }
+  .timeline.timeline-6 { grid-template-columns:1fr }
+  .timeline.timeline-8 { grid-template-columns:1fr }
+  .roster-photo { aspect-ratio:16/10 }
+  section.slide { height:auto; min-height:100svh; overflow:visible; padding:96px 0 60px }
+  .scroll-cue { left:24px }
+  .headline { font-size:clamp(34px, 9vw, 60px) }
+  .hero-title { font-size:clamp(44px, 12vw, 76px) }
+  .divider-title { font-size:clamp(48px, 15vw, 90px) }
+  .numbered-cards { flex-direction:column }
+  .prop-grid, .prop-grid.cols-3 { grid-template-columns:1fr }
+
+  .rb-shard.size-lg { width:220px; height:220px }
+  .rb-shard.size-md { width:150px; height:150px }
+  .rb-shard.size-sm { width:90px; height:90px }
+  .rb-shard.faint { opacity:.12 }
+  .film-grain { opacity:.05 }
+
+  /* Photo slides — full-bleed background on mobile too, just darkened flat
+     (no room for the left/right fade choreography on a narrow screen) */
+  section.slide.has-photo .bg-fade-l,
+  section.slide.has-photo .bg-fade-r,
+  section.slide.has-photo .bg-fade-c,
+  section.slide.has-photo .bg-fade-l-soft,
+  section.slide.has-photo .bg-fade-r-soft {
+    background: rgba(10,14,39,.75);
+  }
+  .mob-dark {
+    display: block;
+    position: absolute; inset: 0; z-index: 0;
+    background: rgba(10,14,39,.75);
+  }
+  section.slide.has-photo .ambient-orb { display:none }
+  #centro-bg { background-color: #0A0E27 }
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- FILM GRAIN — global cinematic texture over the whole deck -->
+<div class="film-grain" aria-hidden="true"></div>
+
+<!-- SHARD GRADIENT DEFS — shared by every .rb-shard instance -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="rb-grad-red" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E4002B"/>
+      <stop offset="100%" stop-color="#7A0019"/>
+    </linearGradient>
+    <linearGradient id="rb-grad-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B5FCC"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- PROGRESS -->
+<div id="prog"><div id="prog-bar"></div></div>
+
+<!-- MENU BUTTON -->
+<button id="menu-btn" aria-label="Abrir índice da apresentação">
+  <span class="menu-btn-ico"><span></span><span></span><span></span></span>
+  <span class="menu-btn-label">Navegar</span>
+  <span class="menu-btn-count">38</span>
+</button>
+
+<!-- CAN TRACK -->
+<div id="can-track-wrap">
+  <div id="can-track">
+    <div id="can-track-fill"></div>
+  </div>
+  <img id="can-thumb" src="https://res.cloudinary.com/m5pxz0b4/image/upload/Redbull.png" alt="">
+</div>
+
+<!-- MENU OVERLAY -->
+<div id="menu-overlay">
+  <div id="menu-panel">
+    <div class="menu-panel-head">
+      <span class="menu-panel-title">Índice da Apresentação</span>
+      <button id="menu-close" aria-label="Fechar índice">✕</button>
+    </div>
+    <nav class="menu-list">
+      <a class="menu-item" style="--i:0" href="#hero"><span class="mi-num">01</span><span class="mi-title">Abertura</span></a>
+      <a class="menu-item" style="--i:1" href="#modelo-tradicional"><span class="mi-num">02</span><span class="mi-title">O Modelo Tradicional</span></a>
+      <a class="menu-item" style="--i:2" href="#publico-jovem"><span class="mi-num">03</span><span class="mi-title">Novo Consumo de Esporte</span></a>
+      <a class="menu-item" style="--i:3" href="#novo-modelo"><span class="mi-num">04</span><span class="mi-title">O Novo Modelo</span></a>
+      <a class="menu-item" style="--i:4" href="#pergunta"><span class="mi-num">05</span><span class="mi-title">Por que o Basquete Ficou de Fora?</span></a>
+      <a class="menu-item" style="--i:5" href="#estava"><span class="mi-num">06</span><span class="mi-title">Estava...</span></a>
+      <a class="menu-item" style="--i:6" href="#formato"><span class="mi-num">07</span><span class="mi-title">Formato da Liga</span></a>
+      <a class="menu-item" style="--i:7" href="#regras"><span class="mi-num">08</span><span class="mi-title">Regras</span></a>
+            <a class="menu-item" style="--i:8" href="#produto"><span class="mi-num">09</span><span class="mi-title">O Produto</span></a>
+      <a class="menu-item" style="--i:9" href="#conteudo-centro"><span class="mi-num">10</span><span class="mi-title">Conteúdo no Centro do Jogo</span></a>
+      <a class="menu-item" style="--i:10" href="#ativacoes"><span class="mi-num">11</span><span class="mi-title">Ativações com o Público</span></a>
+      <a class="menu-item" style="--i:11" href="#presidentes"><span class="mi-num">12</span><span class="mi-title">Presidentes</span></a>
+      <a class="menu-item" style="--i:12" href="#estrutura"><span class="mi-num">13</span><span class="mi-title">Estrutura das Equipes</span></a>
+      <a class="menu-item" style="--i:13" href="#creators-info"><span class="mi-num">14</span><span class="mi-title">Creators</span></a>
+      <a class="menu-item" style="--i:14" href="#seletivas-intro"><span class="mi-num">15</span><span class="mi-title">Seletivas</span></a>
+      <a class="menu-item" style="--i:15" href="#seletivas-ideia"><span class="mi-num">16</span><span class="mi-title">A Ideia das Seletivas</span></a>
+      <a class="menu-item" style="--i:16" href="#seletivas-info"><span class="mi-num">17</span><span class="mi-title">Convocação das Seletivas</span></a>
+      <a class="menu-item" style="--i:17" href="#como-funcionara"><span class="mi-num">18</span><span class="mi-title">Como Funcionará?</span></a>
+      <a class="menu-item" style="--i:18" href="#etapa1"><span class="mi-num">19</span><span class="mi-title">Primeira Etapa</span></a>
+      <a class="menu-item" style="--i:19" href="#etapa2"><span class="mi-num">20</span><span class="mi-title">Segunda Etapa</span></a>
+      <a class="menu-item" style="--i:20" href="#etapa3"><span class="mi-num">21</span><span class="mi-title">Terceira Etapa</span></a>
+      <a class="menu-item" style="--i:21" href="#etapa4"><span class="mi-num">22</span><span class="mi-title">Quarta Etapa</span></a>
+      <a class="menu-item" style="--i:22" href="#hopps-combine"><span class="mi-num">23</span><span class="mi-title">Hoops Combine</span></a>
+      <a class="menu-item" style="--i:23" href="#combine-detalhe"><span class="mi-num">24</span><span class="mi-title">Hoops Combine — Detalhe</span></a>
+      <a class="menu-item" style="--i:24" href="#draft"><span class="mi-num">25</span><span class="mi-title">Draft</span></a>
+      <a class="menu-item" style="--i:25" href="#divider-desenhar"><span class="mi-num">26</span><span class="mi-title">Desenhar Mais</span></a>
+      <a class="menu-item" style="--i:26" href="#calendario"><span class="mi-num">27</span><span class="mi-title">Calendário da Liga</span></a>
+      <a class="menu-item" style="--i:27" href="#premiacao"><span class="mi-num">28</span><span class="mi-title">Premiação</span></a>
+            <a class="menu-item" style="--i:28" href="#divider-propriedades"><span class="mi-num">29</span><span class="mi-title">Propriedades</span></a>
+      <a class="menu-item" style="--i:29" href="#mapa-propriedades"><span class="mi-num">30</span><span class="mi-title">Mapa de Propriedades</span></a>
+      <a class="menu-item" style="--i:30" href="#propriedades-fisicas"><span class="mi-num">31</span><span class="mi-title">Propriedades Físicas</span></a>
+      <a class="menu-item" style="--i:31" href="#vestuario-merchandising"><span class="mi-num">32</span><span class="mi-title">Vestuário &amp; Merchandising</span></a>
+      <a class="menu-item" style="--i:32" href="#digital-premiacoes"><span class="mi-num">33</span><span class="mi-title">Digital e Premiações</span></a>
+      <a class="menu-item" style="--i:33" href="#momentos"><span class="mi-num">34</span><span class="mi-title">Momentos</span></a>
+      <a class="menu-item" style="--i:34" href="#divider-construcao"><span class="mi-num">35</span><span class="mi-title">Sendo Parte da Construção</span></a>
+      <a class="menu-item" style="--i:35" href="#divider-tabela-producao"><span class="mi-num">36</span><span class="mi-title">Tabela de Produção</span></a>
+      <a class="menu-item" style="--i:36" href="#tabela-comercial"><span class="mi-num">37</span><span class="mi-title">Tabela Comercial</span></a>
+      <a class="menu-item" style="--i:37" href="#fechamento"><span class="mi-num">38</span><span class="mi-title">Fechamento</span></a>
+    </nav>
+  </div>
+</div>
+
+
+<!-- 01 HERO -->
+<section id="hero" class="slide has-photo" data-num="01">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/hero-cover.jpg')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="ambient-orb orb-1"></div>
+
+  <svg class="rb-shard pos-tr size-sm rot-1 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:620px">
+      <span class="eyebrow" data-r>01 / Proposta Comercial · 2026</span>
+      <h1 class="headline hero-title" data-r data-d="1" style="color:#fff">HOOPS<br><span style="color:#ff0141">BASKETBALL</span><br>LEAGUE</h1>
+      <p class="subtitle" data-r data-d="2">A nova maneira de viver o esporte.</p>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+
+<!-- 02 MODELO TRADICIONAL -->
+<section id="modelo-tradicional" class="slide has-photo" data-num="02">
+  <div class="bg-photo bg-modelo-tradicional"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-2 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>02 / O Cenário Atual</span>
+      <h2 class="headline" data-r data-d="1">MODELO<br>TRADICIONAL</h2>
+      <div class="rule" data-r data-d="1"></div>
+      <ul class="pill-list" data-r data-d="2">
+        <li>Audiência passiva</li>
+        <li>Jogo longo e pouco editável</li>
+        <li>Baixa integração com creators</li>
+        <li>Patrocínio baseado em exposição</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- 03 PÚBLICO JOVEM -->
+<section id="publico-jovem" class="slide has-photo" data-num="03">
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="https://res.cloudinary.com/m5pxz0b4/video/upload/v1787044181/publico-jovem.mp4" type="video/mp4">
+  </video>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-tr size-sm rot-3 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:820px">
+      <span class="eyebrow" data-r>03 / Novo Consumo</span>
+      <h2 class="headline" data-r data-d="1" style="font-size:clamp(32px,4.4vw,60px)">O PÚBLICO JOVEM CONSOME ESPORTE DE <span class="hi">OUTRO JEITO</span></h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- 04 NOVO MODELO -->
+<section id="novo-modelo" class="slide has-photo" data-num="04">
+  <div class="bg-photo bg-novo-modelo"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-4 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>04 / A Virada</span>
+      <h2 class="headline" data-r data-d="1">O NOVO<br>MODELO</h2>
+      <div class="rule" data-r data-d="1"></div>
+      <ul class="pill-list" data-r data-d="2">
+        <li>Jogo curto e viral</li>
+        <li>Audiência participativa</li>
+        <li>Times como canais de mídia</li>
+        <li>Marca interligada em regras e momentos</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- 05 PERGUNTA -->
+<section id="pergunta" class="slide has-photo" data-num="05">
+  <div class="bg-photo bg-pergunta"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-tr size-sm rot-5 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>05 / A Lacuna</span>
+      <h2 class="headline big-q" data-r data-d="1">MAS POR QUE O<br><span class="hi">BASQUETE</span><br>ESTÁ FORA DO JOGO?</h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- 06 ESTAVA -->
+<section id="estava" class="slide has-photo" data-num="06">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/estava.jpg')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+
+  <svg class="rb-shard pos-tr size-sm rot-3 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>06 / Estava...</span>
+      <h2 class="headline" data-r data-d="1">ESTAVA...</h2>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- 07 FORMATO DA LIGA -->
+<section id="formato" class="slide has-photo" data-num="07">
+  <div class="bg-photo bg-formato"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-1 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:900px">
+      <span class="eyebrow" data-r>07 / A Estrutura</span>
+      <h2 class="headline" data-r data-d="1">FORMATO<br>DA LIGA</h2>
+      <div class="stat-row" data-r data-d="2">
+        <div class="stat"><p class="stat-num">6</p><p class="stat-label">Times</p></div>
+        <div class="stat"><p class="stat-num">8</p><p class="stat-label">Jogadores por time</p></div>
+        <div class="stat"><p class="stat-num">6</p><p class="stat-label">Semanas</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 08 REGRAS (tabs) -->
+<section id="regras" class="slide light-mode" data-num="08">
+  <div class="bg-texture"><span class="tex-blob tex-blob-a"></span><span class="tex-blob tex-blob-b"></span><span class="tex-blob tex-blob-c"></span><span class="tex-lines"></span></div>
+  
+  <svg class="rb-shard pos-tr size-lg rot-1" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="rb-shard pos-bl size-md rot-3" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block regras-block" style="max-width:1040px">
+      <div class="regras-row">
+        <div class="regras-text-col">
+          <span class="eyebrow" data-r>08 / Como se Joga</span>
+          <h2 class="headline" data-r data-d="1">REGRAS</h2>
+          <div class="rule" data-r data-d="1"></div>
+          <div class="carousel-wrap" data-r data-d="2">
+            <div class="carousel" data-carousel>
+              <div class="carousel-track">
+                <div class="carousel-slide">
+                  <p class="carousel-heading">1º e 2º Quarto</p>
+                  <p class="tab-time">8 minutos</p>
+                  <p class="body-text">3x3 — nos primeiros 8 minutos de jogo,<br>as equipes disputam em formato<br>3 contra 3.</p>
+                </div>
+                <div class="carousel-slide">
+                  <p class="carousel-heading">3º Quarto</p>
+                  <p class="tab-time">10 minutos</p>
+                  <p class="body-text">5x5 — no restante da partida,<br>entramos no formato completo<br>de 5 contra 5.</p>
+                </div>
+                <div class="carousel-slide">
+                  <p class="carousel-heading">Momento X1</p>
+                  <p class="tab-time">A qualquer momento</p>
+                  <p class="body-text">Os capitães podem convocar um 1x1<br>a qualquer minuto da partida.</p>
+                </div>
+                <div class="carousel-slide">
+                  <p class="carousel-heading">Pontuação</p>
+                  <p class="tab-time">Lances que valem mais</p>
+                  <p class="body-text">Veja quanto cada jogada vale.</p>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-controls">
+              <span class="carousel-step">01 / 04</span>
+              <button class="carousel-next-btn" type="button">Passar para o Próximo</button>
+            </div>
+          </div>
+        </div>
+        <div class="regras-court-col" data-r data-d="2">
+          <div class="court-wrap" id="regras-court">
+            <svg class="court-svg" viewBox="0 0 210 400" xmlns="http://www.w3.org/2000/svg">
+              <rect class="court-line" x="4" y="4" width="202" height="392" rx="10"/>
+              <line class="court-line" x1="4" y1="200" x2="206" y2="200"/>
+              <circle class="court-line" cx="105" cy="200" r="28"/>
+              <rect class="court-line" x="65" y="4" width="80" height="66"/>
+              <circle class="court-line" cx="105" cy="70" r="28"/>
+              <path class="court-line" d="M190,4 Q105,145 20,4"/>
+              <circle class="court-line" cx="105" cy="16" r="3"/>
+              <rect class="court-line" x="65" y="330" width="80" height="66"/>
+              <circle class="court-line" cx="105" cy="330" r="28"/>
+              <path class="court-line" d="M190,396 Q105,255 20,396"/>
+              <circle class="court-line" cx="105" cy="384" r="3"/>
+              <circle class="court-dot dot-black" data-slot="1" cx="105" cy="150" r="7"/>
+              <circle class="court-dot dot-black" data-slot="2" cx="140" cy="110" r="6"/>
+              <circle class="court-dot dot-black" data-slot="3" cx="70" cy="110" r="6"/>
+              <circle class="court-dot dot-black" data-slot="4" cx="170" cy="70" r="6"/>
+              <circle class="court-dot dot-black" data-slot="5" cx="40" cy="70" r="6"/>
+              <circle class="court-dot dot-red" data-slot="1" cx="105" cy="250" r="7"/>
+              <circle class="court-dot dot-red" data-slot="2" cx="140" cy="290" r="6"/>
+              <circle class="court-dot dot-red" data-slot="3" cx="70" cy="290" r="6"/>
+              <circle class="court-dot dot-red" data-slot="4" cx="170" cy="330" r="6"/>
+              <circle class="court-dot dot-red" data-slot="5" cx="40" cy="330" r="6"/>
+              <circle class="court-dot dot-black" data-half-slot="1" cx="105" cy="60" r="7"/>
+              <circle class="court-dot dot-black" data-half-slot="2" cx="148" cy="95" r="6"/>
+              <circle class="court-dot dot-black" data-half-slot="3" cx="62" cy="95" r="6"/>
+              <circle class="court-dot dot-red" data-half-slot="1" cx="105" cy="178" r="7"/>
+              <circle class="court-dot dot-red" data-half-slot="2" cx="148" cy="140" r="6"/>
+              <circle class="court-dot dot-red" data-half-slot="3" cx="62" cy="140" r="6"/>
+            </svg>
+            <div class="regras-score-boxes" id="regras-score-boxes">
+              <div class="score-box"><p class="score-label">Dunk</p><p class="score-val">+4</p></div>
+              <div class="score-box"><p class="score-label">Block</p><p class="score-val">+1</p></div>
+              <div class="score-box"><p class="score-label">Logo Court</p><p class="score-val">+5</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TELA DE DESCANSO (sem numeração) -->
+<section id="tela-descanso-1" class="slide has-photo no-ghost" data-num="09">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/tela-descanso.jpg')"></div>
+</section>
+
+
+<!-- 09 PRODUTO -->
+<section id="produto" class="slide has-photo" data-num="09">
+  <div class="bg-photo bg-produto"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  <svg class="rb-shard pos-tr size-sm rot-1 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>09 / O Produto</span>
+      <h2 class="headline" data-r data-d="1">BASQUETE<br>REINVENTADO</h2>
+      <div class="rule" data-r data-d="1"></div>
+      <ul class="pill-list" data-r data-d="2">
+        <li>Basquete dinâmico</li>
+        <li>Gamificado</li>
+        <li>Talents como presidentes de franquias</li>
+        <li>Ex-atletas de diversos esportes como protagonistas</li>
+        <li>Espetacularização do jogo</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- 10 CONTEÚDO NO CENTRO DO JOGO (tabs) -->
+<section id="conteudo-centro" class="slide has-photo" data-num="10">
+  <div class="bg-photo" id="centro-bg"></div>
+  <div class="bg-fade-l"></div>
+  <div class="ambient-orb orb-3"></div>
+  
+  <svg class="rb-shard pos-tr size-sm rot-2 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:660px">
+      <span class="eyebrow" data-r>10 / A Narrativa</span>
+      <h2 class="headline" data-r data-d="1">CONTEÚDO NO<br>CENTRO DO JOGO</h2>
+      <div class="tab-group" data-r data-d="2" data-bg-target="centro-bg">
+        <div class="tab-btns">
+          <button class="tab-btn on" data-tab="narr" data-bg="https://res.cloudinary.com/m5pxz0b4/image/upload/centro-banco-reservas.png">Câmera no Banco de Reservas</button>
+          <button class="tab-btn" data-tab="mic" data-bg="https://res.cloudinary.com/m5pxz0b4/image/upload/centro-micup.png">Mic Up</button>
+          <button class="tab-btn" data-tab="cam" data-bg="https://res.cloudinary.com/m5pxz0b4/image/upload/centro-camerajuiz.png">Câmera no Juiz</button>
+        </div>
+        <div class="tab-panel on" data-panel="narr"><p class="body-text">Câmera captando todas as reações do banco de reserva.</p></div>
+        <div class="tab-panel" data-panel="mic"><p class="body-text">Jogadores lapelados durante a partida para produção de conteúdo e maior imersão do público, com curadoria da liga.</p></div>
+        <div class="tab-panel" data-panel="cam"><p class="body-text">Câmeras posicionadas no juiz e no banco de reservas captam ângulos exclusivos e reações em tempo real.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 11 ATIVAÇÕES COM O PÚBLICO (tabs) -->
+<section id="ativacoes" class="slide has-photo" data-num="11">
+  <div class="bg-photo" id="ativacoes-bg" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/ativacoes-embaixador.png')"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-3 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:520px">
+      <span class="eyebrow" data-r>11 / Durante o Jogo</span>
+      <h2 class="headline" data-r data-d="1">ATIVAÇÕES COM<br>O PÚBLICO</h2>
+      <div class="tab-group" data-r data-d="2" data-bg-target="ativacoes-bg">
+        <div class="tab-btns">
+          <button class="tab-btn on" data-tab="emb" data-bg="https://res.cloudinary.com/m5pxz0b4/image/upload/ativacoes-embaixador.png">Ponto do Embaixador</button>
+          <button class="tab-btn" data-tab="miz" data-bg="https://res.cloudinary.com/m5pxz0b4/image/upload/ativacoes-milzao.png">Arremesso do Milzão</button>
+          <button class="tab-btn" data-tab="dunk" data-bg="https://res.cloudinary.com/m5pxz0b4/image/upload/ativacoes-enterradas.png">Torneio de Enterradas</button>
+          <button class="tab-btn" data-tab="skill" data-bg="https://res.cloudinary.com/m5pxz0b4/image/upload/ativacoes-habilidade.png">Disputa de Habilidade</button>
+          <button class="tab-btn" data-tab="masc" data-bg="https://res.cloudinary.com/m5pxz0b4/image/upload/ativacoes-mascotes.png">Mascotes &amp; Sub-8</button>
+        </div>
+        <div class="tab-panel on" data-panel="emb"><p class="body-text">O embaixador é um representante da franquia<br>que pode entrar em qualquer momento do jogo<br>e arremessar — valendo de 1 a 10 pontos,<br>dependendo do local do arremesso.</p></div>
+        <div class="tab-panel" data-panel="miz"><p class="body-text">Um convidado tenta o arremesso mais icônico<br>da quadra, com premiação especial<br>para quem acertar.</p></div>
+        <div class="tab-panel" data-panel="dunk"><p class="body-text">Disputa de enterradas entre atletas convidados<br>no intervalo, com o público decidindo<br>o campeão.</p></div>
+        <div class="tab-panel" data-panel="skill"><p class="body-text">Prova de habilidades entre representantes<br>das franquias: arremesso, drible<br>e velocidade.</p></div>
+        <div class="tab-panel" data-panel="masc"><p class="body-text">Partida descontraída entre os mascotes<br>das franquias e a categoria sub-8,<br>animando o intervalo.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 12 PRESIDENTES -->
+<section id="presidentes" class="slide" data-num="12">
+  <div class="bg-texture"><span class="tex-blob tex-blob-a"></span><span class="tex-blob tex-blob-b"></span><span class="tex-blob tex-blob-c"></span><span class="tex-lines"></span></div>
+
+  <svg class="rb-shard pos-tl size-lg rot-2" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="rb-shard pos-br size-md rot-4" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-c">
+    <div class="block" style="max-width:1120px">
+      <span class="eyebrow" data-r>12 / Os Rostos da Liga</span>
+      <h2 class="headline" data-r data-d="1">PRESIDENTES</h2>
+      <div class="roster-grid fan" data-r data-d="2">
+        <div class="roster-card pending">
+          <div class="roster-photo"><img src="https://res.cloudinary.com/m5pxz0b4/image/upload/p3.png" alt="Em negociação"></div>
+          <div class="roster-body"><p class="roster-tag pending">Em negociação</p></div>
+        </div>
+        <div class="roster-card pending">
+          <div class="roster-photo"><img src="https://res.cloudinary.com/m5pxz0b4/image/upload/p4.png" alt="Em negociação"></div>
+          <div class="roster-body"><p class="roster-tag pending">Em negociação</p></div>
+        </div>
+        <div class="roster-card featured">
+          <div class="roster-photo"><img src="https://res.cloudinary.com/m5pxz0b4/image/upload/p2.png" alt="Leandrinho"></div>
+          <div class="roster-body"><p class="roster-name">Leandrinho</p><p class="roster-tag confirmed">Embaixador</p></div>
+        </div>
+        <div class="roster-card">
+          <div class="roster-photo"><img src="https://res.cloudinary.com/m5pxz0b4/image/upload/p1.png" alt="Gabigol"></div>
+          <div class="roster-body"><p class="roster-name">Gabigol</p><p class="roster-tag confirmed">Presidente</p></div>
+        </div>
+        <div class="roster-card pending">
+          <div class="roster-photo"><img src="https://res.cloudinary.com/m5pxz0b4/image/upload/p5.png" alt="Em negociação"></div>
+          <div class="roster-body"><p class="roster-tag pending">Em negociação</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 13 ESTRUTURA DAS EQUIPES -->
+<section id="estrutura" class="slide has-photo" data-num="13">
+  <div class="bg-photo bg-estrutura"></div>
+  <div class="mob-dark"></div>
+
+  <svg class="rb-shard pos-tr size-sm rot-4 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>13 / Organização</span>
+      <h2 class="headline" data-r data-d="1">ESTRUTURA DAS<br>EQUIPES</h2>
+      <div class="rule" data-r data-d="1"></div>
+      <ul class="pill-list" data-r data-d="2">
+        <li data-expandable="true"><strong>Presidente</strong> — um dos rostos da liga<span class="card-close" aria-hidden="true">&#10005;</span></li>
+        <li data-expandable="true"><strong>Sócio</strong> — braço direito da franquia<span class="card-close" aria-hidden="true">&#10005;</span></li>
+        <li data-expandable="true"><strong>Associados</strong> — creators atrelados à equipe<span class="card-close" aria-hidden="true">&#10005;</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- 14 CREATORS -->
+<section id="creators-info" class="slide has-photo" data-num="14">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/digital.png')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-5 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:860px">
+      <span class="eyebrow" data-r>14 / Comunidade</span>
+      <h2 class="headline" data-r data-d="1">CREATORS</h2>
+      <div class="prop-grid cols-3" data-r data-d="2">
+        <div class="prop-card">
+          <p class="prop-num">01</p>
+          <p class="prop-title">Creators vinculados às equipes</p>
+          <p class="prop-desc">Cada equipe conta com criadores de conteúdo vinculados, que atuam durante toda a temporada.</p>
+        </div>
+        <div class="prop-card">
+          <p class="prop-num">02</p>
+          <p class="prop-title">Acesso exclusivo</p>
+          <p class="prop-desc">Bastidores e acessos VIP para acompanhar as partidas são exclusivos aos creators vinculados à liga.</p>
+        </div>
+        <div class="prop-card">
+          <p class="prop-num">03</p>
+          <p class="prop-title">Momentos de atuação</p>
+          <p class="prop-desc">Semana dos Creators e ativações especiais durante os jogos ao longo da temporada.</p>
+        </div>
+        <div class="prop-card">
+          <p class="prop-num">04</p>
+          <p class="prop-title">Proteção de patrocinadores</p>
+          <p class="prop-desc">Restrição de uso de qualquer item em alusão a concorrentes de patrocinadores diretos da liga em dias de jogos.</p>
+        </div>
+        <div class="prop-card">
+          <p class="prop-num">05</p>
+          <p class="prop-title">Conteúdo oficial protegido</p>
+          <p class="prop-desc">Capitães não podem produzir um conteúdo oficial da Hoops com creators não vinculados à liga.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 15 SELETIVAS -->
+<section id="seletivas-intro" class="slide has-photo" data-num="15">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/seletivas.jpg')"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-tr size-sm rot-1 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:620px">
+      <span class="eyebrow" data-r>15 / Seletivas</span>
+      <h2 class="headline" data-r data-d="1">SELETIVAS</h2>
+      <p class="subtitle" data-r data-d="1">A sua hora chegou!</p>
+      <p class="body-text" data-r data-d="2">Nós queremos levar as seletivas para as ruas. A Hoops reúne o melhor do basquete de rua, inclusive os melhores jogadores que nunca tiveram uma chance.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 16 SELETIVAS · A IDEIA -->
+<section id="seletivas-ideia" class="slide" data-num="16">
+  <div class="bg-texture"><span class="tex-blob tex-blob-a"></span><span class="tex-blob tex-blob-b"></span><span class="tex-blob tex-blob-c"></span><span class="tex-lines"></span></div>
+  
+  <svg class="rb-shard pos-tr size-lg rot-3" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="rb-shard pos-bl size-md rot-5" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:680px">
+      <span class="eyebrow" data-r>16 / A Ideia das Seletivas</span>
+      <p class="subtitle" data-r data-d="1" style="font-size:clamp(20px,2.6vw,28px); color:var(--white); font-variation-settings:'wght' 500,'wdth' 100; line-height:1.5">A ideia é encontrar talentos, histórias, movimentar o basquete brasileiro e garantir que todos os jogadores de basquete tenham a oportunidade de participar da liga.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 17 SELETIVAS · CONVOCAÇÃO -->
+<section id="seletivas-info" class="slide has-photo" data-num="17">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/seletivas-convocacao.jpg')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-2 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:660px">
+      <span class="eyebrow" data-r>17 / Seletivas</span>
+      <h2 class="headline" data-r data-d="1" style="font-size:clamp(28px,3.6vw,48px)">TODO JOGADOR DE BASQUETE DO BRASIL ESTÁ CONVOCADO PARA A SELETIVA DA HOOPS</h2>
+      <ul class="pill-list" data-r data-d="2">
+        <li>Quadras Públicas em São Paulo</li>
+        <li>Olheiros</li>
+        <li>Foco em criar as primeiras histórias da Hoops</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- 18 COMO FUNCIONARÁ -->
+<section id="como-funcionara" class="slide has-photo" data-num="18" style="align-items:flex-end">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/como-funcionara.jpg')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(to top, rgba(10,14,39,.75) 0%, rgba(10,14,39,.35) 25%, rgba(10,14,39,0) 45%)"></div>
+  <div class="mob-dark"></div>
+  <svg class="rb-shard pos-tr size-sm rot-1 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="slide-inner al-c" style="padding-bottom:180px">
+    <div class="block" style="max-width:900px">
+      <span class="eyebrow" data-r>18 / Como Funciona</span>
+      <h2 class="headline" data-r data-d="1">COMO FUNCIONARÁ?</h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- 19 PRIMEIRA ETAPA -->
+<section id="etapa1" class="slide has-photo" data-num="19">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/etapa1.jpg')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+  <svg class="rb-shard pos-br size-sm rot-2 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>19 / Como Funciona</span>
+      <h2 class="headline" data-r data-d="1">PRIMEIRA ETAPA</h2>
+      <p class="subtitle" data-r data-d="2">Anúncio da Hoops + Anúncio das Seletivas.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 20 SEGUNDA ETAPA -->
+<section id="etapa2" class="slide has-photo" data-num="20">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/etapa2.jpg')"></div>
+  <div class="bg-fade-r" style="background:linear-gradient(270deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+  <svg class="rb-shard pos-tl size-sm rot-3 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="slide-inner al-r">
+    <div class="block">
+      <span class="eyebrow" data-r>20 / Como Funciona</span>
+      <h2 class="headline" data-r data-d="1">SEGUNDA ETAPA</h2>
+      <p class="subtitle" data-r data-d="2">Divulgação das datas em que os olheiros estarão presentes no Ibirapuera, Villa Lobos e demais parques desejados.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 21 TERCEIRA ETAPA -->
+<section id="etapa3" class="slide has-photo" data-num="21">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/etapa3.jpg')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+  <svg class="rb-shard pos-br size-sm rot-4 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>21 / Como Funciona</span>
+      <h2 class="headline" data-r data-d="1">TERCEIRA ETAPA</h2>
+      <p class="subtitle" data-r data-d="2">Olheiros avaliam os jogadores presentes na quadra. Sem testes nesse primeiro momento.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 22 QUARTA ETAPA -->
+<section id="etapa4" class="slide has-photo" data-num="22">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/v1787045457/etapa4.jpg')"></div>
+  <div class="mob-dark"></div>
+  <svg class="rb-shard pos-tr size-sm rot-5 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>22 / Como Funciona</span>
+      <h2 class="headline" data-r data-d="1">QUARTA ETAPA</h2>
+      <p class="subtitle" data-r data-d="2">Os 100 melhores prospectos são<br>chamados para o Hoops Combine.</p>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- 23 HOOPS COMBINE -->
+<section id="hopps-combine" class="slide has-photo" data-num="23">
+  <div class="bg-photo bg-hopps-combine"></div>
+  <div class="bg-fade-r" style="background:linear-gradient(270deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-tl size-sm rot-3 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-r">
+    <div class="block">
+      <span class="eyebrow" data-r>23 / A Seleção dos Atletas</span>
+      <h2 class="headline" data-r data-d="1">HOOPS<br>COMBINE</h2>
+      <ul class="pill-list" data-r data-d="2" style="justify-content:flex-start">
+        <li>Presença de Ex-Jogadores</li>
+        <li>Testes nos mesmos moldes do NBA Combine</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- 24 HOOPS COMBINE · DETALHE -->
+<section id="combine-detalhe" class="slide has-photo" data-num="24">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/combine-detalhe.jpg')"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+
+  <svg class="rb-shard pos-br size-sm rot-4 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:680px">
+      <span class="eyebrow" data-r>24 / Hoops Combine — Detalhe</span>
+      <p class="subtitle" data-r data-d="1" style="font-size:clamp(20px,2.6vw,28px); color:#fff; font-variation-settings:'wght' 500,'wdth' 100; line-height:1.5">Os prospectos selecionados se reunirão no Combine onde serão submetidos a testes para serem avaliados e ranqueado pelos jurados presentes.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 25 DRAFT -->
+<section id="draft" class="slide has-photo" data-num="25">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/draft-titulo.jpg')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-tr size-sm rot-5 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>25 / A Montagem dos Times</span>
+      <h2 class="headline" data-r data-d="1">DRAFT</h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- 26 DIVIDER · DESENHAR MAIS -->
+<section id="divider-desenhar" class="slide has-photo" data-num="26">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/divider-desenhar.jpg')"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-1 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:640px">
+      <p class="divider-num" data-r>26</p>
+      <h2 class="headline divider-title" data-r data-d="1" style="font-size:clamp(32px,6vw,64px)">E JUNTOS NÓS TEMOS MUITO MAIS O QUE DESENHAR.</h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- 27 CALENDÁRIO DA LIGA -->
+<section id="calendario" class="slide light-mode" data-num="27">
+  <div class="bg-texture"><span class="tex-blob tex-blob-a"></span><span class="tex-blob tex-blob-b"></span><span class="tex-blob tex-blob-c"></span><span class="tex-lines"></span></div>
+  
+  <svg class="rb-shard pos-tl size-lg rot-4" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-blue)"/><polygon points="10,190 90,70 170,10" fill="#3B5FCC" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#1E3A8A" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-blue)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="rb-shard pos-br size-md rot-1" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-blue)"/><polygon points="10,190 90,70 170,10" fill="#3B5FCC" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#1E3A8A" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-blue)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-c">
+    <div class="block" style="max-width:1220px">
+      <span class="eyebrow" data-r>27 / O Cronograma</span>
+      <h2 class="headline" data-r data-d="1">CALENDÁRIO<br>DA LIGA</h2>
+      <p class="subtitle" data-r data-d="1">Lançamento Maio de 2027.</p>
+      <div class="timeline timeline-8" data-r data-d="2">
+        <div class="tl-step"><p class="tl-week">Semana 1</p><p class="tl-desc">Seletivas</p></div>
+        <div class="tl-step"><p class="tl-week">Semana 2</p><p class="tl-desc">Seletivas</p></div>
+        <div class="tl-step"><p class="tl-week">Semana 3</p><p class="tl-desc">Hoops Combine</p></div>
+        <div class="tl-step"><p class="tl-week">Semana 4</p><p class="tl-desc">Draft</p></div>
+        <div class="tl-step"><p class="tl-week">Semana 5</p><p class="tl-desc">Rodada Regular</p></div>
+        <div class="tl-step"><p class="tl-week">Semana 6</p><p class="tl-desc">Rodada Regular</p></div>
+        <div class="tl-step"><p class="tl-week">Semana 7</p><p class="tl-desc">Semifinais</p></div>
+        <div class="tl-step"><p class="tl-week">Semana 8</p><p class="tl-desc">Finais</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 28 PREMIAÇÃO -->
+<section id="premiacao" class="slide has-photo" data-num="28">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/premiacao-cover.jpg')"></div>
+
+  <svg class="rb-shard pos-tr size-sm rot-2 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block">
+      <span class="eyebrow" data-r>28 / Recompensa</span>
+      <h2 class="headline" data-r data-d="1">PREMIAÇÃO</h2>
+      <div class="prize-grid" data-r data-d="2">
+        <div class="prize-card">
+          <p class="prize-label">Capitão &amp; MVP do time campeão</p>
+          <p class="prize-val">Experiência com Leandrinho na NBA</p>
+        </div>
+        <div class="prize-card">
+          <p class="prize-label">Campeão</p>
+          <p class="prize-val">R$ 8.000 por jogador</p>
+          <p class="prize-desc">+ experiência com Leandrinho em SP</p>
+        </div>
+        <div class="prize-card">
+          <p class="prize-label">Vice-campeão</p>
+          <p class="prize-val">R$ 5.000 por jogador</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TELA DE DESCANSO (sem numeração) -->
+<section id="tela-descanso-2" class="slide has-photo no-ghost" data-num="30">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/tela-descanso.jpg')"></div>
+</section>
+
+
+<!-- 29 DIVIDER · PROPRIEDADES -->
+<section id="divider-propriedades" class="slide has-photo" data-num="29">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/divider-propriedades.jpg')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+  <svg class="rb-shard pos-bl size-sm rot-3 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="slide-inner al-l">
+    <div class="block">
+      <p class="divider-num" data-r>29</p>
+      <h2 class="headline divider-title" data-r data-d="1" style="font-size:clamp(46px,7.9vw,115px)">PROPRIEDADES</h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- 30 MAPA DE PROPRIEDADES -->
+<section id="mapa-propriedades" class="slide has-photo" data-num="30">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/mapa-propriedades.jpg')"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-3 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:1180px">
+      <span class="eyebrow" data-r>30 / Parceria Comercial</span>
+      <h2 class="headline" data-r data-d="1">MAPA DE<br>PROPRIEDADES</h2>
+      <p class="subtitle" data-r data-d="1">Cinco frentes de ativação para a parceria com a Hoops.</p>
+      <div class="prop-grid" data-r data-d="2">
+        <div class="prop-card" data-expandable="true"><p class="prop-num">01</p><p class="prop-title">Propriedades Físicas</p><p class="prop-desc">Bolas, banners, quadra, tabelas e materiais do evento</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">02</p><p class="prop-title">Vestuário &amp; Merchandising</p><p class="prop-desc">Uniforme das equipes, vestuário para as torcidas e linhas exclusivas junto aos presidentes</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">03</p><p class="prop-title">Digital</p><p class="prop-desc">Presença em conteúdo digital e ativações durante os jogos</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">04</p><p class="prop-title">Momentos</p><p class="prop-desc">Draft, Combine, Jogo das Estrelas e Finais como propriedade de marca</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">05</p><p class="prop-title">Creators</p><p class="prop-desc">Criadores vinculados às equipes, acesso exclusivo e proteção de patrocinadores</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 31 PROPRIEDADES FÍSICAS -->
+<section id="propriedades-fisicas" class="slide has-photo" data-num="31">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/propriedades-fisicas.jpg')"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-tr size-sm rot-4 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:900px">
+      <span class="eyebrow" data-r>31 / Propriedades Comerciais</span>
+      <h2 class="headline" data-r data-d="1">PROPRIEDADES<br>FÍSICAS</h2>
+      <div class="prop-grid cols-3" data-r data-d="2">
+        <div class="prop-card" data-expandable="true"><p class="prop-num">01</p><p class="prop-title">Bolas oficiais</p><p class="prop-desc">Bola de jogo, treino e aquecimento</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">02</p><p class="prop-title">Uniformes de arbitragem/staff</p><p class="prop-desc">Apitos, coletes, roupas da comissão técnica</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">03</p><p class="prop-title">Uniformes</p><p class="prop-desc">Camisas, shorts e demais itens de jogo (exclusividade de sneakers por parte dos jogadores)</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">04</p><p class="prop-title">Combine</p><p class="prop-desc">Coletes, cones e equipamentos usados no Combine</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">05</p><p class="prop-title">Quadra de LED</p><p class="prop-desc">Branding da quadra com possibilidade de ativações</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">06</p><p class="prop-title">Vestiários</p><p class="prop-desc">Segmento de roupas para torcedores</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">07</p><p class="prop-title">Tabelas e cestas</p><p class="prop-desc">Logo em tabelas, redes e suportes</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">08</p><p class="prop-title">Sinalização do evento</p><p class="prop-desc">Backdrop, testeira, faixas de out-of-bounds, banners</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">09</p><p class="prop-title">Bancos e mobiliário de quadra</p><p class="prop-desc">Bancos, mesa de mesário, placar</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 32 VESTUÁRIO & MERCHANDISING -->
+<section id="vestuario-merchandising" class="slide has-photo" data-num="32">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/vestuario-merchandising.jpg')"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-5 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:1000px">
+      <span class="eyebrow" data-r>32 / Propriedades Comerciais</span>
+      <h2 class="headline" data-r data-d="1">VESTUÁRIO &amp;<br>MERCHANDISING</h2>
+      <p class="subtitle" data-r data-d="1">Linhas exclusivas de basquete criadas junto à Nike, em três frentes.</p>
+      <div class="numbered-cards" data-r data-d="2">
+        <div class="n-card" data-expandable="true"><span class="n-badge">1</span><p class="n-title">Uniforme das Equipes</p><p class="n-desc">Uniformes oficiais de jogo e treino de todas as equipes da liga</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="n-card" data-expandable="true"><span class="n-badge">2</span><p class="n-title">Roupas de Torcedor</p><p class="n-desc">Linha lifestyle para o dia a dia do torcedor: camisas, moletons e acessórios com a marca da liga</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="n-card" data-expandable="true"><span class="n-badge">3</span><p class="n-title">Linhas Especiais</p><p class="n-desc">Coleções limitadas</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 33 DIGITAL E PREMIAÇÕES -->
+<section id="digital-premiacoes" class="slide has-photo" data-num="33">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/digital-premiacoes.jpg')"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-tr size-sm rot-1 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:900px">
+      <span class="eyebrow" data-r>33 / Propriedades Comerciais</span>
+      <h2 class="headline" data-r data-d="1">DIGITAL E<br>PREMIAÇÕES</h2>
+      <div class="prop-grid cols-3" data-r data-d="2">
+        <div class="prop-card" data-expandable="true"><p class="prop-num">01</p><p class="prop-title">Categoria exclusiva</p><p class="prop-desc">Marca como fornecedor oficial exclusivo (calçados/bolas/material esportivo)</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">02</p><p class="prop-title">Ativação de mídia social</p><p class="prop-desc">Vinheta em conteúdos exclusivos como: Mic Up da Rodada e Câmera do banco de reservas</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">03</p><p class="prop-title">Presença em conteúdo digital</p><p class="prop-desc">Branded content nos vídeos dos criadores, unboxings de produtos, presença da marca nos conteúdos de bastidores da liga</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">04</p><p class="prop-title">Prêmios e premiações</p><p class="prop-desc">"MVP Hoops", troféus de melhor jogador/cesta por rodada</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="prop-card" data-expandable="true"><p class="prop-num">05</p><p class="prop-title">Ativação no local do evento</p><p class="prop-desc">Liberdade para ativações no local do evento</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 34 MOMENTOS -->
+<section id="momentos" class="slide has-photo" data-num="34">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/momentos.jpg')"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-2 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:1180px">
+      <span class="eyebrow" data-r>34 / Propriedades Comerciais</span>
+      <h2 class="headline" data-r data-d="1">MOMENTOS</h2>
+      <p class="subtitle" data-r data-d="1">A marca se apropria dos grandes marcos da temporada.</p>
+      <div class="numbered-cards" data-r data-d="2">
+        <div class="n-card" data-expandable="true"><span class="n-badge">1</span><p class="n-title">Seletivas</p><p class="n-desc">Apresentação dos novos talentos da liga. Naming do evento, backdrop e entrevistas patrocinadas</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="n-card" data-expandable="true"><span class="n-badge">2</span><p class="n-title">Combine</p><p class="n-desc">Avaliações físicas e técnicas dos atletas. Naming, testes de produto ao vivo e conteúdo exclusivo</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="n-card" data-expandable="true"><span class="n-badge">3</span><p class="n-title">Ativações com o Público</p><p class="n-desc">A marca no centro das ativações com o público, alinhada às próprias campanhas vigentes</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+        <div class="n-card" data-expandable="true"><span class="n-badge">4</span><p class="n-title">Finais</p><p class="n-desc">Decisão do título. Naming rights das finais e do troféu</p><span class="card-close" aria-hidden="true">&#10005;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 35 DIVIDER · SENDO PARTE DA CONSTRUÇÃO -->
+<section id="divider-construcao" class="slide has-photo" data-num="35">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/divider-construcao.jpg')"></div>
+  <div class="bg-fade-l" style="background:linear-gradient(90deg, rgba(10,14,39,.85) 0%, rgba(10,14,39,.75) 22%, rgba(10,14,39,.55) 42%, rgba(10,14,39,.15) 62%, rgba(10,14,39,0) 78%)"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-tr size-sm rot-3 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:640px">
+      <p class="divider-num" data-r>35</p>
+      <h2 class="headline divider-title" data-r data-d="1" style="font-size:clamp(32px,6vw,64px)">SENDO PARTE<br>DA CONSTRUÇÃO</h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- 36 DIVIDER · TABELA DE PRODUÇÃO -->
+<section id="divider-tabela-producao" class="slide has-photo" data-num="36">
+  <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/m5pxz0b4/image/upload/divider-tabela-producao.jpg')"></div>
+  <div class="bg-fade-l"></div>
+  <div class="mob-dark"></div>
+  
+  <svg class="rb-shard pos-br size-sm rot-4 faint" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-c">
+    <div class="block" style="max-width:960px">
+      <span class="eyebrow" data-r>36 / Tabela de Produção</span>
+      <h2 class="headline divider-title" data-r data-d="1">TABELA DE PRODUÇÃO</h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- 37 TABELA COMERCIAL -->
+<section id="tabela-comercial" class="slide" data-num="37">
+  <div class="bg-texture"><span class="tex-blob tex-blob-a"></span><span class="tex-blob tex-blob-b"></span><span class="tex-blob tex-blob-c"></span><span class="tex-lines"></span></div>
+  
+  <svg class="rb-shard pos-tr size-lg rot-5" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="rb-shard pos-bl size-md rot-2" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-l">
+    <div class="block" style="max-width:1180px">
+      <span class="eyebrow" data-r>37 / Cotas de Patrocínio</span>
+      <h2 class="headline" data-r data-d="1">TABELA<br>COMERCIAL</h2>
+      <p class="subtitle" data-r data-d="1">Objetivo: R$ 2.000.000 &nbsp;|&nbsp; Cota máxima: R$ 500.000.</p>
+      <div class="table-scroll" data-r data-d="2">
+        <table class="pricing-table">
+          <thead>
+            <tr><th>Cota</th><th>Valor unitário</th><th>Qtd.</th><th>Total</th><th>Principais contrapartidas</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Patrocinador Master<br><span style="color:rgba(255,255,255,.7);font-size:12px">(Naming Rights da Liga)</span></td><td>R$ 500.000</td><td>1</td><td class="num">R$ 500.000</td><td>Naming da liga, logo em uniformes, quadra e mídia</td></tr>
+            <tr><td>Categoria Exclusiva<br><span style="color:rgba(255,255,255,.7);font-size:12px">(Equipamento Esportivo)</span></td><td>R$ 400.000</td><td>1</td><td class="num">R$ 400.000</td><td>Fornecedor oficial exclusivo, linha de produtos licenciados</td></tr>
+            <tr><td>Patrocinador de Momento<br><span style="color:rgba(255,255,255,.7);font-size:12px">(Draft / Combine / Jogo das Estrelas / Finais)</span></td><td>R$ 150.000</td><td>4</td><td class="num">R$ 600.000</td><td>Naming do momento, ativação local, conteúdo dedicado</td></tr>
+            <tr><td>Patrocinador Apoiador</td><td>R$ 100.000</td><td>3</td><td class="num">R$ 300.000</td><td>Presença em conteúdo, ativação pontual</td></tr>
+            <tr><td>Patrocinador Fornecedor<br><span style="color:rgba(255,255,255,.7);font-size:12px">/ Categoria</span></td><td>R$ 50.000</td><td>4</td><td class="num">R$ 200.000</td><td>Categoria específica (bebida, tecnologia etc.)</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td>TOTAL</td><td></td><td>15</td><td class="num">R$ 2.000.000</td><td></td></tr>
+          </tfoot>
+        </table>
+      </div>
+      <p class="pricing-note" data-r data-d="3">Valores de referência — sujeitos a ajuste conforme pacote final negociado</p>
+    </div>
+  </div>
+  <button id="table-edit-btn" class="table-edit-btn" type="button" aria-label="Editar tabela">✎ Editar</button>
+</section>
+
+<!-- TABLE EDIT MODAL — lets the Tabela Comercial numbers be edited in place -->
+<div id="table-edit-modal" class="table-edit-modal">
+  <div class="table-edit-card">
+    <div class="table-edit-actions">
+      <button id="table-edit-cancel" class="table-edit-icon-btn" type="button" aria-label="Cancelar">✕</button>
+      <button id="table-edit-confirm" class="table-edit-icon-btn confirm" type="button" aria-label="Confirmar">✓</button>
+    </div>
+    <div class="table-scroll" id="table-edit-target"></div>
+  </div>
+</div>
+
+
+<!-- 38 FECHAMENTO -->
+<section id="fechamento" class="slide light-mode" data-num="38">
+  <div class="bg-texture"><span class="tex-blob tex-blob-a"></span><span class="tex-blob tex-blob-b"></span><span class="tex-blob tex-blob-c"></span><span class="tex-lines"></span></div>
+  
+  <svg class="rb-shard pos-tl size-lg rot-1" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="rb-shard pos-br size-md rot-3" viewBox="0 0 200 200" aria-hidden="true"><polygon points="10,190 170,10 195,150" fill="url(#rb-grad-red)"/><polygon points="10,190 90,70 170,10" fill="#E4002B" opacity=".5"/><polygon points="170,10 195,150 140,120" fill="#7A0019" opacity=".6"/><path d="M15,185 L50,145 L70,175 L110,120 L130,150 L175,85" fill="none" stroke="url(#rb-grad-red)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="slide-inner al-c">
+    <div class="block">
+      <span class="eyebrow" data-r>38 / Fechamento</span>
+      <h2 class="headline" data-r data-d="1">HOOPS<br>BASKETBALL<br><span class="hi">LEAGUE</span></h2>
+      <p class="subtitle" data-r data-d="2">O jogo está só começando.</p>
+    </div>
+  </div>
+</section>
+
+
+<script>
+// ── Scroll reveal
+const reveals = document.querySelectorAll('[data-r]');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis') });
+}, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+reveals.forEach(el => ro.observe(el));
+
+// ── Progress bar
+const bar = document.getElementById('prog-bar');
+const canFill = document.getElementById('can-track-fill');
+const canThumb = document.getElementById('can-thumb');
+const canImages = [
+  'https://res.cloudinary.com/m5pxz0b4/image/upload/Redbull.png',
+  'https://res.cloudinary.com/m5pxz0b4/image/upload/Redbull2.png',
+  'https://res.cloudinary.com/m5pxz0b4/image/upload/Redbull3.png',
+  'https://res.cloudinary.com/m5pxz0b4/image/upload/Redbull4.png'
+];
+// Redbull.png = lata azul original, Redbull2.png = lata zero (azul clara),
+// Redbull3.png = lata pink Spring Edition, Redbull4.png = lata amarela Tropical Edition
+window.addEventListener('scroll', () => {
+  const pct = scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
+  bar.style.width = pct + '%';
+  if (canFill && canThumb) {
+    canFill.style.height = pct + '%';
+    canThumb.style.top = pct + '%';
+  }
+}, { passive: true });
+
+// ── Arrow key section navigation
+const secList = Array.from(document.querySelectorAll('section.slide[id]'));
+let curSecIdx = 0;
+let navLock = false;
+const secTrack = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) {
+    curSecIdx = secList.indexOf(e.target);
+    if (canThumb) canThumb.src = canImages[curSecIdx % 4];
+  } });
+}, { threshold: 0.5 });
+secList.forEach(s => secTrack.observe(s));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeAnyExpandedCard(); closeMenu(); return }
+  if (navLock) return;
+  if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+    e.preventDefault();
+    const next = secList[curSecIdx + 1];
+    if (next) { navLock = true; next.scrollIntoView({ behavior: 'smooth' }); setTimeout(() => navLock = false, 900); }
+  }
+  if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault();
+    const prev = secList[curSecIdx - 1];
+    if (prev) { navLock = true; prev.scrollIntoView({ behavior: 'smooth' }); setTimeout(() => navLock = false, 900); }
+  }
+});
+
+// ── Menu overlay
+const menuBtn = document.getElementById('menu-btn');
+const menuOverlay = document.getElementById('menu-overlay');
+const menuClose = document.getElementById('menu-close');
+function openMenu() {
+  const list = document.querySelector('.menu-list');
+  if (list) list.scrollTop = 0;
+  menuOverlay.classList.add('open');
+  document.body.classList.add('menu-open');
+}
+function closeMenu() { menuOverlay.classList.remove('open'); document.body.classList.remove('menu-open') }
+menuBtn.addEventListener('click', openMenu);
+menuClose.addEventListener('click', closeMenu);
+menuOverlay.addEventListener('click', e => { if (e.target === menuOverlay) closeMenu() });
+document.querySelectorAll('.menu-item').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    closeMenu();
+    const id = a.getAttribute('href').slice(1);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ── Tabs (Ativações, Conteúdo no Centro do Jogo) — with optional bg-photo swap
+// On mobile, use the portrait ./Image/Stories/N.png version instead of the desktop one.
+function resolveBgPath(path) {
+  if (window.matchMedia('(max-width: 960px)').matches) {
+    return path.replace('./Image/', './Image/Stories/');
+  }
+  return path;
+}
+document.querySelectorAll('.tab-group').forEach(group => {
+  const btns = group.querySelectorAll('.tab-btn');
+  const panels = group.querySelectorAll('.tab-panel');
+  const bgTargetId = group.dataset.bgTarget;
+  const bgEl = bgTargetId ? document.getElementById(bgTargetId) : null;
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('on'));
+      panels.forEach(p => p.classList.remove('on'));
+      btn.classList.add('on');
+      const panel = group.querySelector('.tab-panel[data-panel="' + btn.dataset.tab + '"]');
+      if (panel) panel.classList.add('on');
+      if (bgEl) {
+        const bg = btn.dataset.bg;
+        bgEl.style.backgroundImage = bg ? "url('" + resolveBgPath(bg) + "')" : 'none';
+        bgEl.classList.toggle('flipped', btn.dataset.flip === '1');
+      }
+    });
+  });
+  // re-resolve the initially-active tab's image for the current viewport
+  const activeBtn = group.querySelector('.tab-btn.on');
+  if (bgEl && activeBtn && activeBtn.dataset.bg) {
+    bgEl.style.backgroundImage = "url('" + resolveBgPath(activeBtn.dataset.bg) + "')";
+  }
+});
+
+// ── Carousel (Regras — single "next" button cycles panels, loops back)
+const courtEl = document.getElementById('regras-court');
+const scoreBoxEl = document.getElementById('regras-score-boxes');
+// carousel order: 3x3 (half court) → 5x5 (full court) → Momento X1 (half court) → Pontuação (score boxes)
+const courtConfig = [
+  { view: 'half', n: 3 },
+  { view: 'full', n: 5 },
+  { view: 'half', n: 1 },
+  { view: 'score' },
+];
+
+document.querySelectorAll('.carousel-wrap').forEach(wrap => {
+  const track = wrap.querySelector('.carousel-track');
+  const slides = wrap.querySelectorAll('.carousel-slide');
+  const stepEl = wrap.querySelector('.carousel-step');
+  const nextBtn = wrap.querySelector('.carousel-next-btn');
+  const total = slides.length;
+  let idx = 0;
+  function render() {
+    track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+    if (stepEl) stepEl.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    if (courtEl && scoreBoxEl) {
+      const cfg = courtConfig[idx];
+      const svg = courtEl.querySelector('.court-svg');
+      const fullDots = courtEl.querySelectorAll('.court-dot[data-slot]');
+      const halfDots = courtEl.querySelectorAll('.court-dot[data-half-slot]');
+      if (cfg.view === 'score') {
+        svg.style.display = 'none';
+        scoreBoxEl.style.display = 'flex';
+        courtEl.classList.remove('half');
+      } else if (cfg.view === 'half') {
+        svg.style.display = '';
+        scoreBoxEl.style.display = 'none';
+        svg.setAttribute('viewBox', '0 0 210 200');
+        courtEl.classList.add('half');
+        fullDots.forEach(dot => { dot.style.opacity = '0'; });
+        halfDots.forEach(dot => {
+          dot.style.opacity = parseInt(dot.dataset.halfSlot, 10) <= cfg.n ? '1' : '0';
+        });
+      } else {
+        svg.style.display = '';
+        scoreBoxEl.style.display = 'none';
+        svg.setAttribute('viewBox', '0 0 210 400');
+        courtEl.classList.remove('half');
+        halfDots.forEach(dot => { dot.style.opacity = '0'; });
+        fullDots.forEach(dot => {
+          dot.style.opacity = parseInt(dot.dataset.slot, 10) <= cfg.n ? '1' : '0';
+        });
+      }
+    }
+  }
+  nextBtn.addEventListener('click', () => {
+    idx = (idx + 1) % total;
+    render();
+  });
+  render();
+});
+
+// ── Table Edit (Tabela Comercial) — clone into a modal, edit, write back on confirm
+const tableEditBtn = document.getElementById('table-edit-btn');
+const tableEditModal = document.getElementById('table-edit-modal');
+const tableEditTarget = document.getElementById('table-edit-target');
+const tableEditCancel = document.getElementById('table-edit-cancel');
+const tableEditConfirm = document.getElementById('table-edit-confirm');
+const liveTable = document.querySelector('#tabela-comercial .pricing-table');
+
+if (tableEditBtn && tableEditModal && liveTable) {
+  function openTableEdit() {
+    tableEditTarget.innerHTML = '';
+    const clone = liveTable.cloneNode(true);
+    clone.querySelectorAll('td').forEach(td => td.setAttribute('contenteditable', 'true'));
+    tableEditTarget.appendChild(clone);
+    tableEditModal.classList.add('open');
+  }
+  function closeTableEdit() {
+    tableEditModal.classList.remove('open');
+  }
+  tableEditBtn.addEventListener('click', openTableEdit);
+  tableEditCancel.addEventListener('click', closeTableEdit);
+  tableEditConfirm.addEventListener('click', () => {
+    const editedRows = tableEditTarget.querySelectorAll('tr');
+    const liveRows = liveTable.querySelectorAll('tr');
+    editedRows.forEach((row, ri) => {
+      if (!liveRows[ri]) return;
+      const editedCells = row.querySelectorAll('td, th');
+      const liveCells = liveRows[ri].querySelectorAll('td, th');
+      editedCells.forEach((cell, ci) => {
+        if (liveCells[ci]) liveCells[ci].innerHTML = cell.innerHTML;
+      });
+    });
+    closeTableEdit();
+  });
+  tableEditModal.addEventListener('click', e => { if (e.target === tableEditModal) closeTableEdit(); });
+}
+
+// ── Expandable cards (Estrutura, Mapa de Propriedades, Propriedades Físicas,
+//    Vestuário & Merchandising, Digital e Premiações, Momentos) — click to read, FLIP expand
+function getExpandableSiblings(card, slide) {
+  const block = slide.querySelector('.block');
+  const titleEls = block.querySelectorAll(':scope > .eyebrow, :scope > .headline, :scope > .subtitle, :scope > .rule');
+  const otherCards = slide.querySelectorAll('[data-expandable="true"]');
+  const result = Array.from(titleEls);
+  otherCards.forEach(c => { if (c !== card) result.push(c); });
+  return result;
+}
+
+function hideExpandableSiblings(siblings) {
+  siblings.forEach(el => {
+    clearTimeout(el._expandHideTimer);
+    el.classList.add('is-hidden');
+    el._expandHideTimer = setTimeout(() => { el.style.display = 'none'; }, 320);
+  });
+}
+
+function showExpandableSiblings(siblings) {
+  siblings.forEach(el => {
+    clearTimeout(el._expandHideTimer);
+    el.style.display = '';
+    void el.offsetWidth;
+    el.classList.remove('is-hidden');
+  });
+}
+
+function expandCard(card, slide) {
+  const rect = card.getBoundingClientRect();
+  card._origRect = rect;
+
+  card.style.position = 'fixed';
+  card.style.top = rect.top + 'px';
+  card.style.left = rect.left + 'px';
+  card.style.width = rect.width + 'px';
+  card.style.height = rect.height + 'px';
+
+  slide.classList.add('has-expanded-card');
+  card.classList.add('is-expanded');
+  hideExpandableSiblings(getExpandableSiblings(card, slide));
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const vw = window.innerWidth, vh = window.innerHeight;
+      const targetW = Math.min(600, vw - 48);
+      const targetH = Math.min(vh * 0.72, 560);
+      card.style.top = ((vh - targetH) / 2) + 'px';
+      card.style.left = ((vw - targetW) / 2) + 'px';
+      card.style.width = targetW + 'px';
+      card.style.height = targetH + 'px';
+    });
+  });
+}
+
+function collapseCard(card, slide) {
+  const rect = card._origRect;
+  if (rect) {
+    card.style.top = rect.top + 'px';
+    card.style.left = rect.left + 'px';
+    card.style.width = rect.width + 'px';
+    card.style.height = rect.height + 'px';
+  }
+  showExpandableSiblings(getExpandableSiblings(card, slide));
+  slide.classList.remove('has-expanded-card');
+
+  const onEnd = (e) => {
+    if (e.target !== card || (e.propertyName !== 'top' && e.propertyName !== 'width')) return;
+    card.classList.remove('is-expanded');
+    card.style.position = '';
+    card.style.top = '';
+    card.style.left = '';
+    card.style.width = '';
+    card.style.height = '';
+    card.removeEventListener('transitionend', onEnd);
+  };
+  card.addEventListener('transitionend', onEnd);
+}
+
+const expandableSlideIds = ['estrutura', 'mapa-propriedades', 'propriedades-fisicas', 'vestuario-merchandising', 'digital-premiacoes', 'momentos'];
+expandableSlideIds.forEach(id => {
+  const slide = document.getElementById(id);
+  if (!slide) return;
+  slide.addEventListener('click', e => {
+    const currentExpanded = slide.querySelector('[data-expandable="true"].is-expanded');
+    if (currentExpanded) { collapseCard(currentExpanded, slide); return; }
+    const card = e.target.closest('[data-expandable="true"]');
+    if (card) expandCard(card, slide);
+  });
+});
+
+function closeAnyExpandedCard() {
+  const expanded = document.querySelector('[data-expandable="true"].is-expanded');
+  if (!expanded) return false;
+  const slide = expanded.closest('section.slide');
+  collapseCard(expanded, slide);
+  return true;
+}
+
+</script>
+</body>
+</html>
